@@ -1,0 +1,45 @@
+- title: Home
+  description: A comprehensive single-page documentation site for rrweb, a tool
+    for recording and replaying web sessions. This page serves as a complete
+    guide for developers, starting with a high-level introduction and a live
+    demo link. It details key use cases like bug reproduction and user analysis
+    (#UseCases), followed by a practical quick start guide for implementation
+    (#GettingStarted). The page then offers a deep dive into rrweb's internal
+    design, explaining its serialization, incremental snapshot, replay, and
+    sandboxing mechanisms (#HowItWorks). An extensive 'Recipes' section covers
+    advanced usage for specific scenarios like live replay, canvas recording,
+    plugin integration, and storage optimization (#AdvancedUsage). Finally, it
+    provides information on how to contribute to the project, and showcases
+    community sponsors and users (#Community).
+  path: /home
+  sourceIds:
+    - README.md
+    - .aigne/doc-smith/docs/use-cases.md
+    - docs/recipes/index.md
+    - docs/recipes/record-and-replay.md
+    - docs/serialization.md
+    - docs/observer.md
+    - docs/replay.md
+    - docs/sandbox.md
+    - docs/recipes/live-mode.md
+    - docs/recipes/canvas.md
+    - docs/recipes/plugin.md
+    - docs/recipes/console.md
+    - docs/recipes/optimize-storage.md
+    - docs/recipes/cross-origin-iframes.md
+    - docs/recipes/custom-event.md
+    - docs/recipes/pagination.md
+    - docs/recipes/interaction.md
+    - docs/recipes/customize-replayer.md
+    - docs/recipes/export-to-video.md
+    - docs/recipes/dive-into-event.md
+    - docs/development/coding-style.md
+    - docs/styleguide.md
+    - docs/recipes/index.zh_CN.md
+    - docs/serialization.zh_CN.md
+    - docs/observer.zh_CN.md
+    - docs/replay.zh_CN.md
+    - docs/sandbox.zh_CN.md
+    - docs/recipes/record-and-replay.zh_CN.md
+    - docs/recipes/plugin.zh_CN.md
+  parentId: ""
