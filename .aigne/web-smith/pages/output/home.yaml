@@ -1,7 +1,7 @@
 id: 616571b7c79a8472
-createdAt: 2025-09-28T08:09:59.935Z
-updatedAt: 2025-09-28T08:09:59.935Z
-publishedAt: 2025-09-28T08:09:59.935Z
+createdAt: 2025-09-28T10:47:56.265Z
+updatedAt: 2025-09-28T10:47:56.265Z
+publishedAt: 2025-09-28T10:47:56.265Z
 isPublic: true
 locales:
   en:
@@ -18,87 +18,396 @@ locales:
     header:
       sticky: true
 sections:
-  43483e566b924717:
-    id: 43483e566b924717
+  cd5bde18baa5fa64:
+    id: cd5bde18baa5fa64
     name: Hero
     component: layout-block
     sections:
-      01c7c3d0f9bba783:
-        id: 01c7c3d0f9bba783
+      f7145915bad7ee51:
+        id: f7145915bad7ee51
         name: Title
+        component: layout-block
+        sections:
+          32fa38d7c51e3079:
+            id: 32fa38d7c51e3079
+            name: RichText
+            component: custom-component
+            config:
+              useCache: true
+              componentId: xoHu0J44322kDYc-
+            sectionIds: []
+          590ffa5da2272e04:
+            id: 590ffa5da2272e04
+            name: Action
+            component: custom-component
+            config:
+              useCache: true
+              componentId: a44r0SiGV9AFn2Fj
+            sectionIds: []
+        sectionIds:
+          - 32fa38d7c51e3079
+          - 590ffa5da2272e04
+        config:
+          gridSettings:
+            desktop:
+              32fa38d7c51e3079:
+                x: 0
+                y: 0
+                w: 12
+                h: 1
+              590ffa5da2272e04:
+                x: 0
+                y: 1
+                w: 12
+                h: 1
+          gap: large
+          paddingX: none
+    sectionIds:
+      - f7145915bad7ee51
+    config:
+      gridSettings:
+        desktop:
+          f7145915bad7ee51:
+            x: 0
+            y: 0
+            w: 8
+            h: 1
+      paddingY: custom:150px
+      background: "linear-gradient(to right, #232526, #414345)"
+      backgroundFullWidth: true
+  40a9516a2a36da5b:
+    id: 40a9516a2a36da5b
+    name: Layout 2x2
+    component: layout-block
+    sections:
+      cd5cdb12b292cfd5:
+        id: cd5cdb12b292cfd5
+        name: RichText
         component: custom-component
         config:
           useCache: true
           componentId: xoHu0J44322kDYc-
         sectionIds: []
-      ef12534e7d00bbc9:
-        id: ef12534e7d00bbc9
-        name: Section Layout
+      b25a1fc9fac409e2:
+        id: b25a1fc9fac409e2
+        name: Cards
         component: layout-block
         sections:
-          9914d42155ac4e72:
-            id: 9914d42155ac4e72
-            name: Section Layout
+          79ceef400f044908:
+            id: 79ceef400f044908
+            name: Cards-1
             component: layout-block
             sections:
-              2850505d04303bf1:
-                id: 2850505d04303bf1
-                name: Code
-                component: custom-component
+              215884d5dbeda9f2:
+                id: 215884d5dbeda9f2
+                name: Card
+                component: layout-block
+                sections:
+                  688da075d8c6ce5e:
+                    id: 688da075d8c6ce5e
+                    name: Icon
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: YwuDiIbyyF5vfGpt
+                    sectionIds: []
+                  9076f811740b4112:
+                    id: 9076f811740b4112
+                    name: RichText
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: xoHu0J44322kDYc-
+                    sectionIds: []
+                sectionIds:
+                  - 688da075d8c6ce5e
+                  - 9076f811740b4112
                 config:
-                  useCache: true
-                  componentId: 2EHGy3vwxlS9JGr2
-                sectionIds: []
+                  gridSettings:
+                    desktop:
+                      9076f811740b4112:
+                        x: 0
+                        y: 1
+                        w: 12
+                        h: 1
+                      688da075d8c6ce5e:
+                        x: 0
+                        y: 0
+                        w: 4
+                        h: 1
+                  padding: normal
+                  background: transparent
+                  gap: normal
+                  borderRadius: none
+                  border: none
+                  alignContent: start
+                  paddingY: none
+                  paddingX: none
             sectionIds:
-              - 2850505d04303bf1
+              - 215884d5dbeda9f2
             config:
               gridSettings:
-                desktop:
-                  2850505d04303bf1:
-                    x: 0
-                    y: 0
-                    w: 12
-                    h: 1
-              borderRadius: small
+                desktop: {}
+                mobile: {}
+              padding: normal
+              background: background.paper
+              gap: normal
+              borderRadius: medium
+              border: none
+              paddingX: large
+              paddingY: large
+          76662ea534b77c20:
+            id: 76662ea534b77c20
+            name: Cards-2
+            component: layout-block
+            sections:
+              ce561c19165f49f4:
+                id: ce561c19165f49f4
+                name: Card
+                component: layout-block
+                sections:
+                  ef390dbf7465834a:
+                    id: ef390dbf7465834a
+                    name: Icon
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: YwuDiIbyyF5vfGpt
+                    sectionIds: []
+                  bee1d4c7c2088724:
+                    id: bee1d4c7c2088724
+                    name: RichText
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: xoHu0J44322kDYc-
+                    sectionIds: []
+                sectionIds:
+                  - ef390dbf7465834a
+                  - bee1d4c7c2088724
+                config:
+                  gridSettings:
+                    desktop:
+                      bee1d4c7c2088724:
+                        x: 0
+                        y: 1
+                        w: 12
+                        h: 1
+                      ef390dbf7465834a:
+                        x: 0
+                        y: 0
+                        w: 4
+                        h: 1
+                  padding: normal
+                  background: transparent
+                  gap: normal
+                  borderRadius: none
+                  border: none
+                  alignContent: start
+                  paddingY: none
+                  paddingX: none
+            sectionIds:
+              - ce561c19165f49f4
+            config:
+              gridSettings:
+                desktop: {}
+                mobile: {}
+              padding: normal
+              background: background.paper
+              gap: normal
+              borderRadius: medium
+              border: none
+              paddingX: large
+              paddingY: large
+          6ce32b1b0d57e3b5:
+            id: 6ce32b1b0d57e3b5
+            name: Cards-3
+            component: layout-block
+            sections:
+              b378858c6d10172a:
+                id: b378858c6d10172a
+                name: Card
+                component: layout-block
+                sections:
+                  d12fc91096a1caa3:
+                    id: d12fc91096a1caa3
+                    name: Icon
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: YwuDiIbyyF5vfGpt
+                    sectionIds: []
+                  0d0fdac206e415a4:
+                    id: 0d0fdac206e415a4
+                    name: RichText
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: xoHu0J44322kDYc-
+                    sectionIds: []
+                sectionIds:
+                  - d12fc91096a1caa3
+                  - 0d0fdac206e415a4
+                config:
+                  gridSettings:
+                    desktop:
+                      0d0fdac206e415a4:
+                        x: 0
+                        y: 1
+                        w: 12
+                        h: 1
+                      d12fc91096a1caa3:
+                        x: 0
+                        y: 0
+                        w: 4
+                        h: 1
+                  padding: normal
+                  background: transparent
+                  gap: normal
+                  borderRadius: none
+                  border: none
+                  alignContent: start
+                  paddingY: none
+                  paddingX: none
+            sectionIds:
+              - b378858c6d10172a
+            config:
+              gridSettings:
+                desktop: {}
+                mobile: {}
+              padding: normal
+              background: background.paper
+              gap: normal
+              borderRadius: medium
+              border: none
+              paddingX: large
+              paddingY: large
+          b93157545d5a9a54:
+            id: b93157545d5a9a54
+            name: Cards-4
+            component: layout-block
+            sections:
+              2b032b1b87f9d755:
+                id: 2b032b1b87f9d755
+                name: Card
+                component: layout-block
+                sections:
+                  259b4f21b590500b:
+                    id: 259b4f21b590500b
+                    name: Icon
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: YwuDiIbyyF5vfGpt
+                    sectionIds: []
+                  ca9400f0708c6811:
+                    id: ca9400f0708c6811
+                    name: RichText
+                    component: custom-component
+                    config:
+                      useCache: true
+                      componentId: xoHu0J44322kDYc-
+                    sectionIds: []
+                sectionIds:
+                  - 259b4f21b590500b
+                  - ca9400f0708c6811
+                config:
+                  gridSettings:
+                    desktop:
+                      ca9400f0708c6811:
+                        x: 0
+                        y: 1
+                        w: 12
+                        h: 1
+                      259b4f21b590500b:
+                        x: 0
+                        y: 0
+                        w: 4
+                        h: 1
+                  padding: normal
+                  background: transparent
+                  gap: normal
+                  borderRadius: none
+                  border: none
+                  alignContent: start
+                  paddingY: none
+                  paddingX: none
+            sectionIds:
+              - 2b032b1b87f9d755
+            config:
+              gridSettings:
+                desktop: {}
+                mobile: {}
+              padding: normal
+              background: background.paper
+              gap: normal
+              borderRadius: medium
+              border: none
+              paddingX: large
+              paddingY: large
         sectionIds:
-          - 9914d42155ac4e72
+          - 79ceef400f044908
+          - 76662ea534b77c20
+          - 6ce32b1b0d57e3b5
+          - b93157545d5a9a54
         config:
           gridSettings:
             desktop:
-              9914d42155ac4e72:
+              79ceef400f044908:
                 x: 0
                 y: 0
-                w: 5
+                w: 6
                 h: 1
-            mobile:
-              9914d42155ac4e72:
-                x: 0
+              76662ea534b77c20:
+                x: 6
                 y: 0
-                w: 12
+                w: 6
                 h: 1
-          borderRadius: none
-          alignContent: center
+              6ce32b1b0d57e3b5:
+                x: 0
+                y: 1
+                w: 6
+                h: 1
+              b93157545d5a9a54:
+                x: 6
+                y: 1
+                w: 6
+                h: 1
+          padding: none
+          gap: normal
+          background: transparent
     sectionIds:
-      - 01c7c3d0f9bba783
-      - ef12534e7d00bbc9
+      - cd5cdb12b292cfd5
+      - b25a1fc9fac409e2
     config:
       gridSettings:
         desktop:
-          01c7c3d0f9bba783:
-            x: 0
-            y: 0
-            w: 8
-            h: 1
-          ef12534e7d00bbc9:
+          b25a1fc9fac409e2:
             x: 0
             y: 1
             w: 12
             h: 1
-      paddingY: custom:150px
+          cd5cdb12b292cfd5:
+            x: 2
+            y: 0
+            w: 8
+            h: 1
+        mobile:
+          b25a1fc9fac409e2:
+            x: 0
+            y: 1
+            w: 12
+            h: 1
+          cd5cdb12b292cfd5:
+            x: 0
+            y: 0
+            w: 12
+            h: 1
+      gap: normal
+      padding: large
+      maxWidth: full
       paddingX: none
-      backgroundFullWidth: true
-      background: "linear-gradient(to right, #232526, #414345)"
-      gap: large
+      paddingY: none
   b83c0d91772d1224:
     id: b83c0d91772d1224
     name: Layout 2x2
@@ -432,27 +741,27 @@ sections:
       maxWidth: full
       paddingX: none
       paddingY: none
-  8c510319c3c6f04c:
-    id: 8c510319c3c6f04c
-    name: Layout 2x2
+  6c87339d7932aa59:
+    id: 6c87339d7932aa59
+    name: Layout 1x3
     component: layout-block
     sections:
-      7ea4e13f33dfcf70:
-        id: 7ea4e13f33dfcf70
-        name: RichText
+      1b728675098cbfbd:
+        id: 1b728675098cbfbd
+        name: Title
         component: custom-component
         config:
           useCache: true
           componentId: xoHu0J44322kDYc-
         sectionIds: []
-      b37fd2c0d9877cc9:
-        id: b37fd2c0d9877cc9
-        name: Cards
+      dc602745e5ae57eb:
+        id: dc602745e5ae57eb
+        name: CardList
         component: layout-block
         sections:
-          f45165a08c11539b:
-            id: f45165a08c11539b
-            name: Cards-1
+          329c618086a45602:
+            id: 329c618086a45602
+            name: CardList-1
             component: layout-block
             sections:
               399d7ed50a4fed26:
@@ -505,17 +814,14 @@ sections:
             config:
               gridSettings:
                 desktop: {}
-                mobile: {}
-              padding: normal
-              background: background.paper
               gap: normal
-              borderRadius: medium
-              border: none
               paddingX: large
               paddingY: large
-          fdd3c0a63b07f216:
-            id: fdd3c0a63b07f216
-            name: Cards-2
+              background: background.paper
+              borderRadius: none
+          bee8fad280271cd9:
+            id: bee8fad280271cd9
+            name: CardList-2
             component: layout-block
             sections:
               886210102bffb83c:
@@ -568,17 +874,14 @@ sections:
             config:
               gridSettings:
                 desktop: {}
-                mobile: {}
-              padding: normal
-              background: background.paper
               gap: normal
-              borderRadius: medium
-              border: none
               paddingX: large
               paddingY: large
-          395117cc90236930:
-            id: 395117cc90236930
-            name: Cards-3
+              background: background.paper
+              borderRadius: none
+          173531992aebf766:
+            id: 173531992aebf766
+            name: CardList-3
             component: layout-block
             sections:
               8f6d4eb7ec08ea74:
@@ -631,363 +934,36 @@ sections:
             config:
               gridSettings:
                 desktop: {}
-                mobile: {}
-              padding: normal
-              background: background.paper
-              gap: normal
-              borderRadius: medium
-              border: none
-              paddingX: large
-              paddingY: large
-          fe3550648b206a83:
-            id: fe3550648b206a83
-            name: Cards-4
-            component: layout-block
-            sections:
-              e3c9918be7d0ba8a:
-                id: e3c9918be7d0ba8a
-                name: Card
-                component: layout-block
-                sections:
-                  cbd015039cfc638c:
-                    id: cbd015039cfc638c
-                    name: Icon
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: YwuDiIbyyF5vfGpt
-                    sectionIds: []
-                  ccd489e0f13b8a94:
-                    id: ccd489e0f13b8a94
-                    name: RichText
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: xoHu0J44322kDYc-
-                    sectionIds: []
-                sectionIds:
-                  - cbd015039cfc638c
-                  - ccd489e0f13b8a94
-                config:
-                  gridSettings:
-                    desktop:
-                      ccd489e0f13b8a94:
-                        x: 0
-                        y: 1
-                        w: 12
-                        h: 1
-                      cbd015039cfc638c:
-                        x: 0
-                        y: 0
-                        w: 4
-                        h: 1
-                  padding: normal
-                  background: transparent
-                  gap: normal
-                  borderRadius: none
-                  border: none
-                  alignContent: start
-                  paddingY: none
-                  paddingX: none
-            sectionIds:
-              - e3c9918be7d0ba8a
-            config:
-              gridSettings:
-                desktop: {}
-                mobile: {}
-              padding: normal
-              background: background.paper
-              gap: normal
-              borderRadius: medium
-              border: none
-              paddingX: large
-              paddingY: large
-        sectionIds:
-          - f45165a08c11539b
-          - fdd3c0a63b07f216
-          - 395117cc90236930
-          - fe3550648b206a83
-        config:
-          gridSettings:
-            desktop:
-              f45165a08c11539b:
-                x: 0
-                y: 0
-                w: 6
-                h: 1
-              fdd3c0a63b07f216:
-                x: 6
-                y: 0
-                w: 6
-                h: 1
-              395117cc90236930:
-                x: 0
-                y: 1
-                w: 6
-                h: 1
-              fe3550648b206a83:
-                x: 6
-                y: 1
-                w: 6
-                h: 1
-          padding: none
-          gap: normal
-          background: transparent
-    sectionIds:
-      - 7ea4e13f33dfcf70
-      - b37fd2c0d9877cc9
-    config:
-      gridSettings:
-        desktop:
-          b37fd2c0d9877cc9:
-            x: 0
-            y: 1
-            w: 12
-            h: 1
-          7ea4e13f33dfcf70:
-            x: 2
-            y: 0
-            w: 8
-            h: 1
-        mobile:
-          b37fd2c0d9877cc9:
-            x: 0
-            y: 1
-            w: 12
-            h: 1
-          7ea4e13f33dfcf70:
-            x: 0
-            y: 0
-            w: 12
-            h: 1
-      gap: normal
-      padding: large
-      maxWidth: full
-      paddingX: none
-      paddingY: none
-  4d3bb502565f0345:
-    id: 4d3bb502565f0345
-    name: Layout 1x3
-    component: layout-block
-    sections:
-      73a24e910febc2aa:
-        id: 73a24e910febc2aa
-        name: Title
-        component: custom-component
-        config:
-          useCache: true
-          componentId: xoHu0J44322kDYc-
-        sectionIds: []
-      29a3232aa8d81d93:
-        id: 29a3232aa8d81d93
-        name: CardList
-        component: layout-block
-        sections:
-          dc8a6bde031e89b2:
-            id: dc8a6bde031e89b2
-            name: CardList-1
-            component: layout-block
-            sections:
-              d1a490058603df9b:
-                id: d1a490058603df9b
-                name: Card
-                component: layout-block
-                sections:
-                  701dc3cd712ccfee:
-                    id: 701dc3cd712ccfee
-                    name: Icon
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: YwuDiIbyyF5vfGpt
-                    sectionIds: []
-                  a4abf0b66b4177be:
-                    id: a4abf0b66b4177be
-                    name: RichText
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: xoHu0J44322kDYc-
-                    sectionIds: []
-                sectionIds:
-                  - 701dc3cd712ccfee
-                  - a4abf0b66b4177be
-                config:
-                  gridSettings:
-                    desktop:
-                      a4abf0b66b4177be:
-                        x: 0
-                        y: 1
-                        w: 12
-                        h: 1
-                      701dc3cd712ccfee:
-                        x: 0
-                        y: 0
-                        w: 4
-                        h: 1
-                  padding: normal
-                  background: transparent
-                  gap: normal
-                  borderRadius: none
-                  border: none
-                  alignContent: start
-                  paddingY: none
-                  paddingX: none
-            sectionIds:
-              - d1a490058603df9b
-            config:
-              gridSettings:
-                desktop: {}
-              gap: normal
-              paddingX: large
-              paddingY: large
-              background: background.paper
-              borderRadius: none
-          256483998ee798f9:
-            id: 256483998ee798f9
-            name: CardList-2
-            component: layout-block
-            sections:
-              6d657acbeef84f16:
-                id: 6d657acbeef84f16
-                name: Card
-                component: layout-block
-                sections:
-                  8b434142672e5bad:
-                    id: 8b434142672e5bad
-                    name: Icon
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: YwuDiIbyyF5vfGpt
-                    sectionIds: []
-                  0a391dfbade150e4:
-                    id: 0a391dfbade150e4
-                    name: RichText
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: xoHu0J44322kDYc-
-                    sectionIds: []
-                sectionIds:
-                  - 8b434142672e5bad
-                  - 0a391dfbade150e4
-                config:
-                  gridSettings:
-                    desktop:
-                      0a391dfbade150e4:
-                        x: 0
-                        y: 1
-                        w: 12
-                        h: 1
-                      8b434142672e5bad:
-                        x: 0
-                        y: 0
-                        w: 4
-                        h: 1
-                  padding: normal
-                  background: transparent
-                  gap: normal
-                  borderRadius: none
-                  border: none
-                  alignContent: start
-                  paddingY: none
-                  paddingX: none
-            sectionIds:
-              - 6d657acbeef84f16
-            config:
-              gridSettings:
-                desktop: {}
-              gap: normal
-              paddingX: large
-              paddingY: large
-              background: background.paper
-              borderRadius: none
-          02d280c85dbe008a:
-            id: 02d280c85dbe008a
-            name: CardList-3
-            component: layout-block
-            sections:
-              5ac07f5dd8852fd1:
-                id: 5ac07f5dd8852fd1
-                name: Card
-                component: layout-block
-                sections:
-                  ae5befcc2bf694d2:
-                    id: ae5befcc2bf694d2
-                    name: Icon
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: YwuDiIbyyF5vfGpt
-                    sectionIds: []
-                  2e363713d1998f12:
-                    id: 2e363713d1998f12
-                    name: RichText
-                    component: custom-component
-                    config:
-                      useCache: true
-                      componentId: xoHu0J44322kDYc-
-                    sectionIds: []
-                sectionIds:
-                  - ae5befcc2bf694d2
-                  - 2e363713d1998f12
-                config:
-                  gridSettings:
-                    desktop:
-                      2e363713d1998f12:
-                        x: 0
-                        y: 1
-                        w: 12
-                        h: 1
-                      ae5befcc2bf694d2:
-                        x: 0
-                        y: 0
-                        w: 4
-                        h: 1
-                  padding: normal
-                  background: transparent
-                  gap: normal
-                  borderRadius: none
-                  border: none
-                  alignContent: start
-                  paddingY: none
-                  paddingX: none
-            sectionIds:
-              - 5ac07f5dd8852fd1
-            config:
-              gridSettings:
-                desktop: {}
               gap: normal
               paddingX: large
               paddingY: large
               background: background.paper
               borderRadius: none
         sectionIds:
-          - dc8a6bde031e89b2
-          - 256483998ee798f9
-          - 02d280c85dbe008a
+          - 329c618086a45602
+          - bee8fad280271cd9
+          - 173531992aebf766
         config:
           gridSettings:
             desktop:
-              dc8a6bde031e89b2:
+              329c618086a45602:
                 x: 0
                 y: 0
                 w: 12
                 h: 1
-              256483998ee798f9:
+              bee8fad280271cd9:
                 x: 0
                 y: 1
                 w: 12
                 h: 1
-              02d280c85dbe008a:
+              173531992aebf766:
                 x: 0
                 y: 2
                 w: 12
                 h: 1
           gap: normal
-      5679236c98b27556:
-        id: 5679236c98b27556
+      9f5d87cd266ec4dd:
+        id: 9f5d87cd266ec4dd
         name: Action
         component: custom-component
         config:
@@ -995,9 +971,9 @@ sections:
           componentId: a44r0SiGV9AFn2Fj
         sectionIds: []
     sectionIds:
-      - 73a24e910febc2aa
-      - 29a3232aa8d81d93
-      - 5679236c98b27556
+      - 1b728675098cbfbd
+      - dc602745e5ae57eb
+      - 9f5d87cd266ec4dd
     config:
       gap: normal
       paddingX: none
@@ -1005,41 +981,41 @@ sections:
       paddingY: none
       gridSettings:
         desktop:
-          73a24e910febc2aa:
+          1b728675098cbfbd:
             x: 0
             y: 0
             w: 12
             h: 1
-          29a3232aa8d81d93:
+          dc602745e5ae57eb:
             x: 0
             y: 1
             w: 12
             h: 1
-          5679236c98b27556:
+          9f5d87cd266ec4dd:
             x: 0
             y: 2
             w: 12
             h: 1
-  29fd44aece76794f:
-    id: 29fd44aece76794f
+  8f59222c0ad9bf83:
+    id: 8f59222c0ad9bf83
     name: CTA
     component: layout-block
     sections:
-      98b3e0a90ef87a4d:
-        id: 98b3e0a90ef87a4d
+      ebfde8f1492c99d8:
+        id: ebfde8f1492c99d8
         name: Section Layout
         component: layout-block
         sections:
-          f0383e45b29d54f0:
-            id: f0383e45b29d54f0
+          095bd0dc0bf5cc83:
+            id: 095bd0dc0bf5cc83
             name: RichText
             component: custom-component
             config:
               useCache: true
               componentId: xoHu0J44322kDYc-
             sectionIds: []
-          4ee99228da85dee5:
-            id: 4ee99228da85dee5
+          6b045369c370ff98:
+            id: 6b045369c370ff98
             name: Action
             component: custom-component
             config:
@@ -1047,17 +1023,17 @@ sections:
               componentId: a44r0SiGV9AFn2Fj
             sectionIds: []
         sectionIds:
-          - f0383e45b29d54f0
-          - 4ee99228da85dee5
+          - 095bd0dc0bf5cc83
+          - 6b045369c370ff98
         config:
           gridSettings:
             desktop:
-              f0383e45b29d54f0:
+              095bd0dc0bf5cc83:
                 x: 0
                 y: 0
                 w: 12
                 h: 1
-              4ee99228da85dee5:
+              6b045369c370ff98:
                 x: 0
                 y: 1
                 w: 12
@@ -1069,12 +1045,12 @@ sections:
           border: none
           paddingY: large
     sectionIds:
-      - 98b3e0a90ef87a4d
+      - ebfde8f1492c99d8
     config:
       padding: large
       gridSettings:
         desktop:
-          98b3e0a90ef87a4d:
+          ebfde8f1492c99d8:
             x: 0
             y: 0
             w: 12
@@ -1083,68 +1059,72 @@ sections:
       paddingX: none
       paddingY: none
 sectionIds:
-  - 43483e566b924717
+  - cd5bde18baa5fa64
+  - 40a9516a2a36da5b
   - b83c0d91772d1224
-  - 8c510319c3c6f04c
-  - 4d3bb502565f0345
-  - 29fd44aece76794f
+  - 6c87339d7932aa59
+  - 8f59222c0ad9bf83
 dataSource:
-  01c7c3d0f9bba783:
+  32fa38d7c51e3079:
     en:
       properties:
         gs1rn5jmxfvpxptx:
           value:
-            text: Record and Replay the Web
+            text: |
+              Record and Replay the Web
             style:
               color: common.white
               variant: h1
-        kyg0hdy5uqq4gc1o:
-          value: flex-start
         9ajrz12ik7esfk1z:
           value:
             list:
-              - id: item-1754131284858-7ip6im6yq
+              - id: item-1754042380003-mnbkkn5fa
                 type: text
-                text: rrweb is a powerful open-source tool for recording and replaying users'
-                  interactions on your web application. See exactly what your
-                  users see and revolutionize your debugging and user analysis.
+                text: >
+                  rrweb is a powerful open-source tool for recording and
+                  replaying users' interactions on your web application. See
+                  exactly what your users see and revolutionize your debugging
+                  and user analysis.
                 style:
                   color: common.white
                   fontSize: 16px
                   variant: body1
         v5utpm7bu9yvdpnq:
           value: flex-start
-  2850505d04303bf1:
+        kyg0hdy5uqq4gc1o:
+          value: flex-start
+  590ffa5da2272e04:
     en:
       properties:
-        b2jrz12ik7esf93z:
-          value: record.js
-        a7frn5jmx5vpxpt3:
-          value: |-
-            import rrweb from 'rrweb';
-
-            // Start recording everything that happens on the page
-            const stopFn = rrweb.record({
-              emit(event) {
-                // You'll want to save the event to a database or a file
-                console.log('New event recorded:', event);
-              },
-            });
-
-            // You can stop the recording at any time
-            // stopFn();
-        e9kvx5d7y82lm3n:
-          value: default
-        qvxiyadgn5bj6oq8:
-          value: false
-        c4kvf6b7zyskk8m:
-          value: false
-        7mp2u9tibl03thp6:
-          value: shell
-        d8hvf7cxz93jk5p:
-          value: 1rem
-        3uqbvyqzsluuv5hs:
-          value: "500"
+        b8x4m3n9kp7qtw5r:
+          value:
+            - id: btn-default-1
+              type: link
+              text: Try the Live Demo
+              url: https://www.rrweb.io/
+              variant: contained
+              size: large
+              target: _blank
+              needLogin: false
+            - type: link
+              text: View on GitHub
+              url: https://github.com/rrweb-io/rrweb
+              color: ""
+              borderColor: ""
+              variant: outlined
+              size: large
+              target: _blank
+              startIcon: ""
+              endIcon: ""
+              needLogin: false
+              imageUrl: ""
+              imageUrlDark: ""
+              imageHoverAnimation: true
+              id: btn-1754042480282-63txf2twj
+        v5utpm7bu9yvdpnq:
+          value: flex-start
+        v9979xeclpsbvn0n:
+          value: flex-start
   f2fceaee42d5c604:
     en:
       properties:
@@ -1161,10 +1141,12 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Capture the exact sequence of events that led to a bug. Replay sessions to
-                  see the issue firsthand, inspect the DOM at any point, and
-                  slash debugging time by eliminating the 'it works on my
-                  machine' problem.
+                text: Capture the exact conditions and interactions that lead to a bug.
+                  Developers can replay the session to observe the issue
+                  firsthand, inspect the DOM at any point in time, and debug
+                  with complete context. This eliminates the 'it works on my
+                  machine' problem and dramatically reduces the time spent on
+                  issue replication.
                 style:
                   color: ""
                   fontSize: 16px
@@ -1198,10 +1180,11 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Gain deep, qualitative insights into user journeys. Watch real sessions to
-                  identify friction points, uncover usability issues, and
-                  understand user intent in a way that charts and graphs can't
-                  show you.
+                text: Gain qualitative insights into how users interact with your application.
+                  Session replays allow product managers and UX designers to
+                  watch actual user journeys, identify points of friction,
+                  discover usability issues, and understand behavior in a way
+                  that quantitative analytics alone cannot provide.
                 style:
                   color: ""
                   fontSize: 16px
@@ -1224,7 +1207,7 @@ dataSource:
       properties:
         gs1rn5jmxfvpxptx:
           value:
-            text: Customer Support & Co-browsing
+            text: Customer Support and Co-browsing
             style:
               fontSize: ""
               variant: h4
@@ -1235,9 +1218,11 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Power up your support team by viewing a user's session live. Provide
-                  accurate, contextual guidance without the guesswork, leading
-                  to faster resolutions and happier customers.
+                text: Power real-time customer support by viewing a user's session live (with
+                  sensitive data masked). Support agents can provide accurate,
+                  contextual guidance without guesswork, leading to faster
+                  resolutions and a better customer experience. This is often
+                  referred to as 'co-browsing.'
                 style:
                   color: ""
                   fontSize: 16px
@@ -1255,12 +1240,12 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  9076f811740b4112:
+  9d2f663bc2e29067:
     en:
       properties:
         gs1rn5jmxfvpxptx:
           value:
-            text: Interactive Product Demos
+            text: Creating Product Demos and Training
             style:
               fontSize: ""
               variant: h4
@@ -1271,9 +1256,10 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Create high-fidelity, interactive product tours from real recorded
-                  sessions. Ditch the mockups and build compelling onboarding
-                  materials or marketing demos that feel real because they are.
+                text: Generate high-fidelity, interactive product tours and tutorials from
+                  recorded sessions. Instead of creating mock-ups, you can use
+                  real application interactions to create realistic and
+                  effective onboarding materials or marketing demos.
                 style:
                   color: ""
                   fontSize: 16px
@@ -1282,7 +1268,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  688da075d8c6ce5e:
+  db033aae1e3c1d54:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1291,7 +1277,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  bee1d4c7c2088724:
+  f2fb3166b6c9c1fc:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1307,9 +1293,10 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Supercharge your E2E testing. Convert complex user sessions into automated
-                  test scripts to capture edge cases and intricate flows that
-                  are a pain to write manually.
+                text: Accelerate the creation of end-to-end tests by converting recorded user
+                  sessions into automated test scripts. This helps capture
+                  complex user flows and edge cases that are difficult to script
+                  manually, thereby improving test coverage and reliability.
                 style:
                   color: ""
                   fontSize: 16px
@@ -1318,7 +1305,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  ef390dbf7465834a:
+  da6b792c97ecf07e:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1327,7 +1314,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  0d0fdac206e415a4:
+  28f6b4d80fb340cf:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1343,9 +1330,10 @@ dataSource:
             list:
               - id: item-1753379691477-fu786lae3
                 type: text
-                text: Maintain a detailed, replayable audit trail of user activity. For
-                  regulated industries, session replays provide a verifiable and
-                  undeniable record of user actions within your application.
+                text: Maintain a detailed, replayable audit trail of user activity for
+                  compliance and security purposes. In regulated industries like
+                  finance or healthcare, session replays provide a verifiable
+                  record of user actions within the application.
                 style:
                   color: ""
                   fontSize: 16px
@@ -1354,7 +1342,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  d12fc91096a1caa3:
+  040b190b21b2d8e2:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1363,7 +1351,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  377804d96efd83c0:
+  cd5cdb12b292cfd5:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1384,7 +1372,7 @@ dataSource:
                   color: ""
                   fontSize: 16px
                   variant: body1
-  6810e063c9f1221a:
+  9076f811740b4112:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1411,7 +1399,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  4eb46879da64c0c2:
+  688da075d8c6ce5e:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1420,7 +1408,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  57e4c20c4e4ed652:
+  bee1d4c7c2088724:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1447,7 +1435,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  93c7131601e4171e:
+  ef390dbf7465834a:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1456,7 +1444,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  bcf709ec16cf0e06:
+  0d0fdac206e415a4:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1483,7 +1471,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  1129de512a394873:
+  d12fc91096a1caa3:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1492,7 +1480,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  c38eee14271cdc5a:
+  ca9400f0708c6811:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1519,7 +1507,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  5a4f32d1de656850:
+  259b4f21b590500b:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1528,7 +1516,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  7ea4e13f33dfcf70:
+  377804d96efd83c0:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1550,7 +1538,7 @@ dataSource:
                   color: ""
                   fontSize: 16px
                   variant: body1
-  fcc2a6bce8dfc961:
+  6810e063c9f1221a:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1577,7 +1565,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  612acdaec15c7267:
+  4eb46879da64c0c2:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1586,7 +1574,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  6715829cfb5a6045:
+  57e4c20c4e4ed652:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1613,7 +1601,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  17e2bf6c35ea6a14:
+  93c7131601e4171e:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1622,7 +1610,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  b666217a893dd312:
+  bcf709ec16cf0e06:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1649,7 +1637,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  b0cb540591e952b0:
+  1129de512a394873:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1658,7 +1646,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  ccd489e0f13b8a94:
+  c38eee14271cdc5a:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1685,7 +1673,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  cbd015039cfc638c:
+  5a4f32d1de656850:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1694,7 +1682,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  73a24e910febc2aa:
+  1b728675098cbfbd:
     en:
       properties:
         v5utpm7bu9yvdpnq:
@@ -1719,7 +1707,7 @@ dataSource:
                   color: text.secondary
                   fontSize: ""
                   variant: body1
-  5679236c98b27556:
+  9f5d87cd266ec4dd:
     en:
       properties:
         b8x4m3n9kp7qtw5r:
@@ -1732,7 +1720,7 @@ dataSource:
               size: large
               target: _blank
               needLogin: false
-  a4abf0b66b4177be:
+  fcc2a6bce8dfc961:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1758,7 +1746,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  701dc3cd712ccfee:
+  612acdaec15c7267:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1767,7 +1755,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  0a391dfbade150e4:
+  6715829cfb5a6045:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1793,7 +1781,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  8b434142672e5bad:
+  17e2bf6c35ea6a14:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1802,7 +1790,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  2e363713d1998f12:
+  b666217a893dd312:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1828,7 +1816,7 @@ dataSource:
           value: flex-start
         kyg0hdy5uqq4gc1o:
           value: flex-start
-  ae5befcc2bf694d2:
+  b0cb540591e952b0:
     en:
       properties:
         5ek4m0kw9cu0ndns:
@@ -1837,7 +1825,7 @@ dataSource:
           value: 40px
         gugqsxx3xyveuu8n:
           value: primary.main
-  f0383e45b29d54f0:
+  095bd0dc0bf5cc83:
     en:
       properties:
         gs1rn5jmxfvpxptx:
@@ -1859,7 +1847,7 @@ dataSource:
                   color: ""
                   fontSize: 16px
                   variant: body1
-  4ee99228da85dee5:
+  6b045369c370ff98:
     en:
       properties:
         b8x4m3n9kp7qtw5r:

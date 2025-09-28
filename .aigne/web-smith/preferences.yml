@@ -1,0 +1,7 @@
+rules:
+  - id: pref_4825d6a93b26005e
+    active: true
+    scope: page
+    rule: Do not include code snippets in the hero section.
+    feedback: Please do not include code snippet in hero section, figure out proper content to put in hero section
+    createdAt: 2025-09-28T10:47:14.184Z
