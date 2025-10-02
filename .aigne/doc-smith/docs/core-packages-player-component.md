@@ -1,40 +1,32 @@
 # Player Component
 
-The `rrweb-player` is a feature-rich UI component designed for replaying sessions recorded by rrweb. While the core `rrweb.Replayer` API provides the engine for playback, `rrweb-player` wraps it with a complete user interface, including a timeline, play/pause controls, speed adjustments, and more.
-
-This guide covers how to install, configure, and programmatically control the `rrweb-player` component in your application.
+The `rrweb-player` is a pre-built UI component that provides a feature-rich playback interface for rrweb sessions. It utilizes the core `rrweb.Replayer` engine internally and adds essential controls like a progress bar, play/pause buttons, and speed adjustments. This component is designed to be a drop-in solution for replaying recorded events with a user-friendly interface.
 
 ## Installation
 
-You can integrate `rrweb-player` into your project either through a CDN or by installing it from a package manager like npm.
+You can integrate `rrweb-player` into your project either through a CDN or by installing it from the NPM registry.
 
-### CDN
+### Using a CDN
 
-For quick integration, include the stylesheet and script directly in your HTML file.
+For quick integration, include the stylesheet and script directly in your HTML file. This method requires no build setup.
 
 ```html HTML Setup icon=logos:html-5
-<head>
-  <!-- Player Stylesheet -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"
-  />
-</head>
-<body>
-  <!-- Player Script -->
-  <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.umd.cjs"></script>
-</body>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.umd.cjs"></script>
 ```
 
-### npm/yarn
+### Using NPM
 
-For projects using a build system, install the package and import it along with its CSS.
+For projects with a build process, install the package using npm or yarn.
 
 ```shell NPM Installation icon=logos:npm-icon
 npm install --save rrweb-player
 ```
 
-Then, import the player and its styles into your JavaScript or TypeScript file.
+After installation, import the player and its required CSS into your application.
 
 ```javascript Importing the Player icon=logos:javascript
 import rrwebPlayer from 'rrweb-player';
@@ -43,132 +35,114 @@ import 'rrweb-player/dist/style.css';
 
 ## Basic Usage
 
-To use the player, you need a target DOM element to mount it on and an array of rrweb events to replay.
+To use the player, instantiate it with a target DOM element and provide the recorded events through the `props` object. The player will mount itself onto the specified target.
 
 ```javascript Basic Player Initialization icon=logos:javascript
-// Assuming 'events' is an array of rrweb events you have recorded
-
-const player = new rrwebPlayer({
+// Assuming 'events' is an array of recorded rrweb events
+new rrwebPlayer({
   target: document.body, // The element where the player will be mounted
   props: {
-    events, // The array of events to replay
+    events,
   },
 });
 ```
 
-This will render the player in the specified `target` element and automatically start playing the session.
-
 ## Configuration (Props)
 
-The behavior and appearance of the `rrweb-player` can be customized through its `props`. Below are the available options.
+The `rrweb-player` component can be configured through a set of properties passed during initialization. The following options allow you to customize its appearance and behavior.
 
 <x-field-group>
-  <x-field data-name="events" data-type="eventWithTime[]" data-required="true" data-default="[]" data-desc="The array of rrweb events to be replayed."></x-field>
-  <x-field data-name="width" data-type="number" data-default="1024" data-desc="The width of the replayer viewport."></x-field>
-  <x-field data-name="height" data-type="number" data-default="576" data-desc="The height of the replayer viewport."></x-field>
-  <x-field data-name="maxScale" data-type="number" data-default="1" data-desc="The maximum zoom scale of the replayer. Set to 0 for unlimited scaling."></x-field>
-  <x-field data-name="autoPlay" data-type="boolean" data-default="true" data-desc="If true, the player will start playing automatically upon initialization."></x-field>
-  <x-field data-name="speed" data-type="number" data-default="1" data-desc="The default playback speed."></x-field>
-  <x-field data-name="speedOption" data-type="number[]" data-default="[1, 2, 4, 8]" data-desc="An array of available playback speed options to display in the controller UI."></x-field>
-  <x-field data-name="showController" data-type="boolean" data-default="true" data-desc="If false, the player's default controller UI (timeline, buttons) will be hidden."></x-field>
-  <x-field data-name="skipInactive" data-type="boolean" data-default="false" data-desc="If true, periods of user inactivity will be skipped during playback."></x-field>
-  <x-field data-name="tags" data-type="Record<string, string>" data-default="{}" data-desc="A key-value map to customize the styling of custom events on the timeline."></x-field>
-  <x-field data-name="inactiveColor" data-type="string" data-default="#D4D4D4" data-desc="A valid CSS color string for the inactive periods indicator on the progress bar."></x-field>
+  <x-field data-name="events" data-type="eventWithTime[]" data-required="true" data-default="[]">
+    <x-field-desc markdown>An array of `rrweb` events to be replayed.</x-field-desc>
+  </x-field>
+  <x-field data-name="width" data-type="number" data-default="1024">
+    <x-field-desc markdown>The width of the player container in pixels.</x-field-desc>
+  </x-field>
+  <x-field data-name="height" data-type="number" data-default="576">
+    <x-field-desc markdown>The height of the player container in pixels.</x-field-desc>
+  </x-field>
+  <x-field data-name="maxScale" data-type="number" data-default="1">
+    <x-field-desc markdown>The maximum scale of the replayer content (e.g., `1` = 100%). Set to `0` for an unlimited scale.</x-field-desc>
+  </x-field>
+  <x-field data-name="autoPlay" data-type="boolean" data-default="true">
+    <x-field-desc markdown>Determines if the playback should start automatically upon initialization.</x-field-desc>
+  </x-field>
+  <x-field data-name="speed" data-type="number" data-default="1">
+    <x-field-desc markdown>The default playback speed.</x-field-desc>
+  </x-field>
+  <x-field data-name="speedOption" data-type="number[]" data-default="[1, 2, 4, 8]">
+    <x-field-desc markdown>An array of available playback speed options to display in the controller UI.</x-field-desc>
+  </x-field>
+  <x-field data-name="showController" data-type="boolean" data-default="true">
+    <x-field-desc markdown>If set to `false`, the default player controls (progress bar, buttons) will be hidden. This is useful for creating a custom UI.</x-field-desc>
+  </x-field>
+  <x-field data-name="tags" data-type="Record<string, string>" data-default="{}">
+    <x-field-desc markdown>A key-value map to customize the styling of custom events displayed on the progress bar.</x-field-desc>
+  </x-field>
+  <x-field data-name="inactiveColor" data-type="string" data-default="#D4D4D4">
+    <x-field-desc markdown>A valid CSS color string to customize the color of the inactive time indicator on the progress bar.</x-field-desc>
+  </x-field>
 </x-field-group>
 
-Any additional options provided in `props` will be passed directly to the underlying `rrweb.Replayer` instance. For a full list of available replayer options, please refer to the [rrweb Replayer options documentation](https://github.com/rrweb-io/rrweb/blob/master/guide.md#options-1).
+In addition to these options, all configuration options for the core [`rrweb.Replayer`](https://github.com/rrweb-io/rrweb/blob/master/guide.md#options-1) can be passed directly within the `props` object to customize the underlying replay engine.
 
 ## Programmatic Control (API)
 
-In addition to the visual controller, you can interact with the `rrweb-player` instance programmatically. This is particularly useful when building a custom user interface.
+The `rrweb-player` instance exposes several methods that allow for programmatic control over the playback. This is particularly useful when building a custom controller UI.
 
-### Methods
+| Method Signature                                                                       | Description                                                                 |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `play(): void`                                                                         | Starts or resumes playback.                                                 |
+| `pause(): void`                                                                        | Pauses playback.                                                            |
+| `toggle(): void`                                                                       | Toggles the playback state between play and pause.                          |
+| `goto(timeOffset: number, play?: boolean): void`                                       | Jumps to a specific time offset (in milliseconds). Optionally starts playing from there. |
+| `setSpeed(speed: number): void`                                                        | Sets the playback speed.                                                    |
+| `toggleSkipInactive(): void`                                                           | Toggles whether to skip periods of user inactivity.                         |
+| `addEvent(event: eventWithTime): void`                                                 | Adds a new event to the events list.                                        |
+| `getMetaData(): { startTime: number, endTime: number, totalTime: number }`             | Returns metadata about the session, including start, end, and total time.   |
+| `getReplayer(): Replayer`                                                              | Returns the underlying `rrweb.Replayer` instance.                           |
+| `getMirror(): Mirror`                                                                  | Returns the `Mirror` instance used for mapping IDs to nodes.              |
+| `triggerResize(): void`                                                                | Manually triggers a resize calculation for the player.                      |
+| `playRange(timeOffset: number, endTimeOffset: number, startLooping?: boolean, afterHook?: () => void): void` | Plays a specific time range within the session, with an option to loop.     |
 
-The player instance exposes several methods for controlling playback.
+## Listening to Player Events
 
-| Method | Description |
-|---|---|
-| `play()` | Starts or resumes playback. |
-| `pause()` | Pauses playback. |
-| `toggle()` | Toggles between play and pause states. |
-| `goto(timeOffset: number, play?: boolean)` | Jumps to a specific point in time (in milliseconds from the start). If `play` is true, it will start playing from that point. |
-| `setSpeed(speed: number)` | Sets the playback speed. |
-| `toggleSkipInactive()` | Toggles the skipping of inactive periods. |
-| `addEvent(event: eventWithTime)` | Adds a new event to the timeline dynamically. |
-| `getMetaData()` | Returns metadata about the session, including `startTime`, `endTime`, and `totalTime`. |
-| `getReplayer()` | Returns the underlying `rrweb.Replayer` instance. |
-| `triggerResize()` | Manually triggers the player to recalculate its dimensions. Call this after changing the container's size. |
+To monitor the player's state, you can subscribe to events using the `addEventListener` method. This allows you to react to state changes and update your custom UI accordingly.
 
-### Listening to Events
-
-The player emits events that allow you to monitor its state. You can listen to these events using the `addEventListener` method.
-
-```javascript Listening to Player Events icon=logos:javascript
-const player = new rrwebPlayer({
+```javascript Listening to Events icon=logos:javascript
+const playerInstance = new rrwebPlayer({
   target: document.body,
-  props: { events },
+  props: {
+    events,
+    showController: false, // Hiding default UI
+  },
 });
 
-// Listen for updates to the current playback time
-player.addEventListener('ui-update-current-time', (event) => {
-  console.log('Current time:', event.payload);
+// Fired when the player's state (e.g., Playing, Paused) changes
+playerInstance.addEventListener('ui-update-player-state', (event) => {
+  console.log('New player state:', event.payload);
 });
 
-// Listen for changes in the player's state (e.g., playing, paused)
-player.addEventListener('ui-update-player-state', (event) => {
-  console.log('Player state:', event.payload);
+// Fired continuously with the current time offset
+playerInstance.addEventListener('ui-update-current-time', (event) => {
+  // Useful for updating a custom time display
+  const currentTime = Math.floor(event.payload / 1000); // convert ms to seconds
+  console.log('Current time:', currentTime);
+});
+
+// Fired when playback is complete
+playerInstance.addEventListener('finish', () => {
+  console.log('Playback finished.');
 });
 ```
 
 Key events include:
-- `ui-update-current-time`: Fires repeatedly with the current time offset as the payload.
-- `ui-update-player-state`: Fires when the player state changes (e.g., 'playing', 'paused', 'finished').
-- `ui-update-progress`: Fires when the user interacts with the progress bar.
 
-## Example: Building a Custom Controller
-
-You can hide the default controller and build your own by combining props and API methods.
-
-First, set up your HTML with a target for the player and your custom control buttons.
-
-```html Custom Controls HTML icon=logos:html-5
-<div id="player-container"></div>
-<div id="custom-controls">
-  <button id="play-btn">Play</button>
-  <button id="pause-btn">Pause</button>
-  <button id="goto-btn">Go to 15s</button>
-</div>
-```
-
-Next, in your JavaScript, initialize the player with `showController: false` and attach event listeners to your buttons.
-
-```javascript Custom Controller Logic icon=logos:javascript
-const playerContainer = document.getElementById('player-container');
-
-const player = new rrwebPlayer({
-  target: playerContainer,
-  props: {
-    events,
-    showController: false, // Hide the default UI
-  },
-});
-
-document.getElementById('play-btn').addEventListener('click', () => {
-  player.play();
-});
-
-document.getElementById('pause-btn').addEventListener('click', () => {
-  player.pause();
-});
-
-document.getElementById('goto-btn').addEventListener('click', () => {
-  // Go to 15000 milliseconds (15 seconds)
-  player.goto(15000);
-});
-```
+-   **`ui-update-player-state`**: Fires when the player state changes (e.g., from `Playing` to `Paused`).
+-   **`ui-update-current-time`**: Fires repeatedly with the current time offset in milliseconds.
+-   **`ui-update-progress`**: Fires with the current progress as a percentage.
+-   **`finish`**: Fires once the entire session has been replayed.
 
 ## Summary
 
-The `rrweb-player` provides a powerful and customizable way to replay user sessions. You can use it out-of-the-box for a complete UI solution or leverage its comprehensive API to build a fully custom playback experience.
-
-To better understand the data that `rrweb-player` consumes, you can learn more about how rrweb creates a [DOM Snapshot](./core-packages-dom-snapshot.md).
+The `rrweb-player` component offers a robust and configurable solution for replaying sessions. By leveraging its properties, API, and events, you can embed a full-featured player directly into your application or build a completely custom playback UI tailored to your specific needs. For more details on the recording process, see [Recording a Session](./getting-started-recording-a-session.md).

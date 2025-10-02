@@ -1,144 +1,98 @@
 # Getting Started
 
-This guide provides a step-by-step process to help you integrate rrweb into your project. The objective is to achieve a functional recording and replay implementation in under 30 minutes. We will cover the essential steps: installation, recording a user session, and replaying it.
+This guide offers a quick-start for developers to install rrweb, record their first session, and replay it. The goal is to achieve a working example in under 30 minutes. The process involves three main steps: Installation, Recording, and Replaying.
 
-![rrweb demo](../../../packages/rrvideo/demo/demo.gif)
+## The Basic Workflow
 
-Follow these three primary stages to get started:
+The fundamental workflow of rrweb is straightforward:
+1.  **Record**: Capture user interactions and DOM changes on a webpage using `rrweb.record()`. This generates a series of JSON events.
+2.  **Store**: Save these events. You can send them to a server, store them in a database, or keep them in local storage. The key is to maintain their order.
+3.  **Replay**: Load the stored events into `rrweb.Replayer` to reconstruct and play back the user's session in another browser session.
+
+This diagram illustrates the flow from recording to replay:
+
+```d2
+direction: down
+
+web-app: {
+  label: "Web Application\n(Live User Session)"
+  shape: rectangle
+}
+
+rrweb-record: {
+  label: "rrweb.record()"
+  shape: rectangle
+}
+
+storage: {
+  label: "Event Storage\n(Server, DB, etc.)"
+  shape: cylinder
+}
+
+rrweb-replayer: {
+  label: "rrweb.Replayer"
+  shape: rectangle
+}
+
+replay-target: {
+  label: "Replay Target\n(e.g., iframe)"
+  shape: rectangle
+}
+
+web-app -> rrweb-record: "1. Record Session"
+rrweb-record -> storage: "2. Store JSON Events"
+storage -> rrweb-replayer: "3. Load Events"
+rrweb-replayer -> replay-target: "4. Replay Session"
+```
+
+## How to Proceed
+
+We've broken down the process into three simple, sequential guides. Follow them in order to go from zero to a fully functional implementation.
 
 <x-cards data-columns="3">
-  <x-card data-title="Installation" data-icon="lucide:download" data-href="/getting-started/installation">
-    Learn how to add rrweb to your project using package managers like npm and yarn, or by including it directly from a CDN.
+  <x-card data-title="1. Installation" data-icon="lucide:download" data-href="/getting-started/installation">
+    First, add the rrweb library to your project. We'll cover installation using package managers like npm/yarn and via a CDN for quick prototyping.
   </x-card>
-  <x-card data-title="Recording a Session" data-icon="lucide:record-circle" data-href="/getting-started/recording-a-session">
-    Follow a simple example to start recording user interactions on your web page with the `rrweb.record()` function.
+  <x-card data-title="2. Recording a Session" data-icon="lucide:record-circle" data-href="/getting-started/recording-a-session">
+    Next, learn how to start recording a user's session with a simple function call. This section provides a minimal, copy-paste example to get you started.
   </x-card>
-  <x-card data-title="Replaying a Session" data-icon="lucide:play-circle" data-href="/getting-started/replaying-a-session">
-    Use the recorded event data with the rrweb player to play back the captured user session in the browser.
+  <x-card data-title="3. Replaying a Session" data-icon="lucide:play-circle" data-href="/getting-started/replaying-a-session">
+    Finally, use the recorded data with the rrweb replayer to play back the session. We'll show you how to set up the player and load the events.
   </x-card>
 </x-cards>
 
-## A Complete Example
+## A Quick Look at the API
 
-For a practical and immediate result, the following HTML file contains a complete, self-contained example. It demonstrates how to record a session and then replay it within the same page. You can save this code as an `.html` file and open it in your browser to see it work.
+To give you a preview, here is a look at the core recording and replaying functions.
 
-```html A complete record and replay example icon=logos:html-5
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>rrweb Getting Started</title>
-    <!-- Import rrweb library from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.umd.cjs"></script>
-    <!-- Import rrweb-player stylesheet for the replayer UI -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"
-    />
-    <!-- Import rrweb-player library from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.js"></script>
-    <style>
-      /* Basic styling for the demonstration */
-      body {
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-      }
-      #replay-container {
-        margin-top: 1.5rem;
-        border: 1px solid #ccc;
-        background: #f0f0f0;
-      }
-      button, input, textarea {
-        margin: 0.5rem;
-        padding: 0.5rem;
-        font-size: 1rem;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>rrweb Getting Started Example</h1>
-    <p>Interact with the elements below. Your actions will be recorded.</p>
+### Recording
 
-    <!-- Interactive elements to record -->
-    <textarea placeholder="Type something here..."></textarea>
-    <input type="text" placeholder="Another input field" />
-    <button id="action-btn">Click Me!</button>
+You can start recording with a single API call. The `emit` callback is where you'll receive the event data to store.
 
-    <!-- Controls for recording and replaying -->
-    <div id="controls">
-      <button id="record-btn">Start Recording</button>
-      <button id="replay-btn" disabled>Replay Session</button>
-    </div>
+```javascript Recording a Session icon=logos:javascript
+let events = [];
 
-    <!-- Container for the replayer -->
-    <div id="replay-container"></div>
+const stopFn = rrweb.record({
+  emit(event) {
+    // Push the event to the events array
+    events.push(event);
+  },
+});
 
-    <script>
-      let events = [];
-      let stopFn = null;
-
-      const recordBtn = document.getElementById('record-btn');
-      const replayBtn = document.getElementById('replay-btn');
-      const actionBtn = document.getElementById('action-btn');
-
-      // Simple counter for the action button
-      let clicks = 0;
-      actionBtn.addEventListener('click', () => {
-        clicks++;
-        actionBtn.textContent = `Clicked ${clicks} times`;
-      });
-
-      recordBtn.addEventListener('click', () => {
-        if (stopFn) {
-          // If already recording, stop it
-          stopFn();
-          stopFn = null;
-          recordBtn.textContent = 'Start Recording';
-          replayBtn.disabled = false; // Enable replay button
-        } else {
-          // Start a new recording
-          events = []; // Clear previous events
-          stopFn = rrweb.record({
-            emit(event) {
-              // Push each recorded event to the 'events' array
-              events.push(event);
-            },
-          });
-          recordBtn.textContent = 'Stop Recording';
-          replayBtn.disabled = true; // Disable replay until recording stops
-        }
-      });
-
-      replayBtn.addEventListener('click', () => {
-        if (events.length < 2) {
-            alert('Please record a session first.');
-            return;
-        }
-
-        // Clear the replay container before starting a new replay
-        const replayContainer = document.getElementById('replay-container');
-        replayContainer.innerHTML = '';
-
-        // Initialize the replayer with the recorded events
-        const replayer = new rrwebPlayer({
-          target: replayContainer,
-          props: {
-            events,
-            width: 800,
-            height: 600,
-          },
-        });
-
-        // Start the replay
-        replayer.play();
-      });
-    </script>
-  </body>
-</html>
+// Later, to stop recording:
+// stopFn();
 ```
 
-## Next Steps
+### Replaying
 
-Now that you have a basic implementation, you can explore the core components of rrweb in more detail to customize its functionality. Proceed to the [Core Packages](./core-packages.md) section to learn about the recording engine, the player component, and the DOM snapshot mechanism.
+To replay, you just need a target element to mount the replayer and the array of events you recorded.
+
+```javascript Replaying a Session icon=logos:javascript
+const replayer = new rrweb.Replayer(events, {
+  root: document.body, // The element to replay in
+});
+
+replayer.play();
+```
+
+Ready to begin? Let's start with the [Installation guide](./getting-started-installation.md).

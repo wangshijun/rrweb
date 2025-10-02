@@ -62,5 +62,5 @@ sourcesPath:  # Source code paths to analyze
   - ./docs
   - ./.aigne/doc-smith/docs/use-cases.md
 
-lastGitHead: 045ddb6b49470334e6a1d2319c807f31372422ff
+lastGitHead: c186b097358c6bde55cf60d2394e3bd09f22fb86
 appUrl: https://staging.websmith.aigne.io

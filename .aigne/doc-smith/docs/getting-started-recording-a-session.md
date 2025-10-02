@@ -1,112 +1,98 @@
+
 # Recording a Session
 
-This guide provides a simple, copy-paste ready example to start recording user interactions on a web page. The primary function for this is `rrweb.record()`, which captures DOM changes, user input, and other browser events into a structured format.
+To capture user interactions on a web page, you will use the `rrweb.record()` function. This function observes the Document Object Model (DOM) and listens for user actions like mouse clicks, scrolling, and keyboard input. It converts all these activities into a series of structured data objects called "events".
+
+This guide provides a straightforward, practical example to begin recording.
 
 ## Basic Recording
 
-To begin recording, you only need to call the `rrweb.record()` function. The most critical option is the `emit` callback, which receives each captured event. It is your responsibility to store these events for later replay.
+The primary function for recording is `rrweb.record()`. It takes a configuration object as its argument. The only required option is `emit`, a callback function that receives the recorded events one by one.
 
-The `rrweb.record()` function returns another function that you can call to stop the recording process.
+Here is a minimal example of how to start and stop a recording:
 
-Here is a minimal example of how to start recording and collect events in an array:
+```javascript Basic Recording Example icon=logos:javascript
+// This events array will store the recorded events.
+const events = [];
 
-```javascript Basic Recording Setup icon=logos:javascript
-// This array will store the events for the session.
-let events = [];
-
-// Start recording, and save the function that stops the recording.
+// The 'rrweb.record' function returns a function that can be used to stop the recording.
 const stopFn = rrweb.record({
   emit(event) {
-    // Push the event to the events array.
+    // Push the event into the events array
     events.push(event);
   },
 });
 
-// To stop the recording, you can call the returned function.
-// For example, after 30 seconds:
-// setTimeout(() => {
-//   stopFn(); 
-//   console.log('Recording stopped. Events captured:', events);
-// }, 30000);
-```
-
-In a real-world application, you would typically send these events to a server for persistent storage rather than just keeping them in a local array.
-
-## A Complete Example
-
-Let's create a more practical example with "Start" and "Stop" buttons to control the recording session. When the recording is stopped, the captured event data will be logged to the browser's console.
-
-You can copy and paste this complete HTML file into a local file and open it in your browser to see it in action. Make sure you have included the `rrweb` script, for example, from a CDN.
-
-```html Full Recording Example icon=mdi:code-braces
-<!DOCTYPE html>
-<html>
-<head>
-  <title>rrweb Recording Example</title>
-  <!-- Include the rrweb library from a CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.js"></script>
-</head>
-<body>
-
-  <h1>rrweb Recording Demo</h1>
-  <p>Interact with the page (click, type, resize) to generate events.</p>
-  
-  <textarea placeholder="Type something here..."></textarea>
-  <button id="record-btn">Start Recording</button>
-  <button id="stop-btn" disabled>Stop Recording</button>
-
-  <script>
-    let stopFn = null;
-    let events = [];
-
-    const recordBtn = document.getElementById('record-btn');
-    const stopBtn = document.getElementById('stop-btn');
-
-    recordBtn.addEventListener('click', () => {
-      events = []; // Reset events array
-      
-      // Start the recording with the 'emit' callback.
-      stopFn = rrweb.record({
-        emit(event) {
-          events.push(event);
-        },
-      });
-
-      // Update button states
-      recordBtn.setAttribute('disabled', 'true');
-      stopBtn.removeAttribute('disabled');
-      console.log('Recording started...');
-    });
-
-    stopBtn.addEventListener('click', () => {
-      if (stopFn) {
-        stopFn(); // Stop the recording
-      }
-
-      // Update button states
-      recordBtn.removeAttribute('disabled');
-      stopBtn.setAttribute('disabled', 'true');
-      console.log('Recording stopped. Total events:', events.length);
-      
-      // Log the captured events to the console
-      console.log('Captured events:', events);
-    });
-  </script>
-
-</body>
-</html>
+// For demonstration, we'll stop the recording after 5 seconds.
+// In a real application, you would call stopFn based on user action or other logic.
+setTimeout(() => {
+  stopFn();
+  console.log('Recording stopped. Total events captured:', events.length);
+  // You can now save the 'events' array to a file, send it to a server, etc.
+  console.log(JSON.stringify(events));
+}, 5000);
 ```
 
 ### How It Works
 
-1.  **Initialization**: We declare a `stopFn` variable to hold the stop function and an `events` array to store the captured data.
-2.  **Start Recording**: Clicking the "Start Recording" button calls `rrweb.record()`. The `emit` function pushes every event into our `events` array. The returned stop function is stored in `stopFn`.
-3.  **Stop Recording**: Clicking the "Stop Recording" button executes the `stopFn`, which cleans up all listeners and ends the session. The collected `events` are then logged to the console.
+1.  **Initialization**: We declare an empty array named `events` to store the data rrweb produces.
+2.  **Starting the Recorder**: We call `rrweb.record()` with an object containing the `emit` function.
+    *   **`emit(event)`**: This is the core of the recording process. `rrweb` calls this function every time a new interaction or change is captured. Our implementation simply adds each `event` object to our `events` array.
+3.  **Stopping the Recorder**: The `rrweb.record()` function returns another function, which we've named `stopFn`. When you are ready to end the recording session, you call `stopFn()`. This detaches all the observers and stops the recording process.
 
-Now that you have successfully recorded a session, the next logical step is to play it back. You can learn how to do this in the next section.
+## The Recorded Events
 
----
+After stopping the recording, the `events` array will contain a JSON-serializable representation of the user's session. Each event object in the array has a `type`, a `timestamp`, and a `data` payload.
 
-Next, let's learn how to replay the session you just recorded.
+Here is a simplified example of what the first few events in the array might look like:
 
-[Replaying a Session](./getting-started-replaying-a-session.md)
+```json Captured Events (Example) icon=mdi:code-json
+[
+  {
+    "type": 2,
+    "data": {
+      "href": "http://localhost:8080/",
+      "width": 1440,
+      "height": 796
+    },
+    "timestamp": 1617936187031
+  },
+  {
+    "type": 0,
+    "data": {},
+    "timestamp": 1617936187032
+  },
+  {
+    "type": 1,
+    "data": {},
+    "timestamp": 1617936187033
+  },
+  {
+    "type": 3,
+    "data": {
+      "node": {
+        "id": 1,
+        "type": 0,
+        "childNodes": [
+          // ... full DOM snapshot ...
+        ]
+      },
+      "initialOffset": {
+        "left": 0,
+        "top": 0
+      }
+    },
+    "timestamp": 1617936187042
+  }
+]
+```
+
+These events capture everything from the initial state of the page (a full DOM snapshot) to subsequent incremental changes and user interactions.
+
+## Summary
+
+You have now successfully recorded a user session. The process involves initializing the recorder with an `emit` function to collect events and calling the returned function to stop the recording.
+
+With the array of events captured, you are ready for the next step.
+
+- **Next**: Learn how to play back this session in the [Replaying a Session](./getting-started-replaying-a-session.md) guide.

@@ -1,90 +1,115 @@
 # Installation
 
-This guide provides instructions for adding rrweb to your project. You can install rrweb using a package manager like npm or by including it directly in your HTML via a CDN. For most development workflows, using a package manager is the recommended approach.
+To begin recording and replaying web sessions, you first need to add `rrweb` to your project. You can do this either by using a package manager like npm or by including the library from a Content Delivery Network (CDN).
 
-## Using a Package Manager (npm/yarn)
+## Using a Package Manager
 
-If your project uses a build system like Vite, Webpack, or Rollup, you can install rrweb from the npm registry.
+For most modern web development workflows, installing `rrweb` via a package manager is the recommended approach. This allows you to easily manage versions and integrate `rrweb` with bundlers like Vite or Webpack.
 
-### 1. Install the Core Recorder
+There are two main packages you'll typically work with:
 
-The `rrweb` package contains the core logic for recording session events.
+*   **`rrweb`**: The core library for recording web sessions.
+*   **`rrweb-player`**: A feature-rich player component with a user interface for replaying sessions.
 
-```bash NPM icon=logos:npm-icon
+### Install `rrweb` (for recording)
+
+To capture user sessions, install the `rrweb` package.
+
+```bash NPM
 npm install rrweb
 ```
 
-```bash Yarn icon=logos:yarn
+```bash Yarn
 yarn add rrweb
 ```
 
-### 2. Install the Player
+After installation, you can import it into your project:
 
-To replay recorded sessions, you'll need the `rrweb-player`. It provides a full-featured UI with playback controls.
+```javascript Importing rrweb icon=logos:javascript
+import * as rrweb from 'rrweb';
 
-```bash NPM icon=logos:npm-icon
+// Or, if you prefer named imports:
+import { record } from 'rrweb';
+```
+
+### Install `rrweb-player` (for replaying)
+
+To replay sessions with a pre-built user interface, you'll need the `rrweb-player` package.
+
+```bash NPM
 npm install rrweb-player
 ```
 
-```bash Yarn icon=logos:yarn
+```bash Yarn
 yarn add rrweb-player
 ```
 
-After installation, you can import the necessary modules and styles into your application.
+To use the player, you must import both the JavaScript module and its corresponding stylesheet.
 
-```javascript Importing rrweb and rrweb-player icon=logos:javascript
-// Import the recorder
-import * as rrweb from 'rrweb';
-
-// Import the player and its styles
+```javascript Importing rrweb-player icon=logos:javascript
 import rrwebPlayer from 'rrweb-player';
+
+// Don't forget to import the CSS for the player UI
 import 'rrweb-player/dist/style.css';
 ```
 
-### All-in-One Package
-
-For convenience, the `@rrweb/all` package bundles the core `rrweb` recorder with the packer plugin, which can help reduce the size of the recorded data.
-
-```bash NPM icon=logos:npm-icon
-npm install @rrweb/all rrweb-player
-```
-
-```bash Yarn icon=logos:yarn
-yarn add @rrweb/all rrweb-player
-```
-
-
 ## Using a CDN
 
-For quick prototypes, simple HTML pages, or online coding platforms like CodePen, you can use rrweb directly from a CDN.
+If you prefer not to use a build system or want to quickly prototype, you can include `rrweb` directly in your HTML file using `<script>` tags from a CDN like jsDelivr or unpkg.
 
-Add the following scripts and stylesheet to your HTML file. The `rrweb` script provides the recording functionality, and the `rrweb-player` script and stylesheet provide the replaying UI.
+### For Recording
 
-```html HTML Setup icon=logos:html-5
-<!-- rrweb Player Stylesheet -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"
-/>
+Include the core `rrweb` script in your HTML. This will make the `rrweb` object available globally.
 
-<!-- rrweb Core Recorder -->
-<script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.umd.cjs"></script>
-
-<!-- rrweb Player -->
-<script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.umd.cjs"></script>
+```html HTML Setup for Recording icon=mdi:language-html5
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rrweb Recording</title>
+    <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.umd.cjs"></script>
+  </head>
+  <body>
+    <script>
+      // The rrweb object is now available on the window
+      window.rrweb.record({
+        emit(event) {
+          console.log(event);
+        },
+      });
+    </script>
+  </body>
+</html>
 ```
 
-When included via CDN, `rrweb` and `rrwebPlayer` will be available as global variables on the `window` object.
+### For Replaying with UI
 
-```javascript Global Access icon=logos:javascript
-const { record } = window.rrweb;
-const { rrwebPlayer } = window;
+To use the player, you need to include both its JavaScript and CSS files.
 
-// Now you can use record() and new rrwebPlayer()
+```html HTML Setup for Replaying icon=mdi:language-html5
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rrweb Replay</title>
+    <!-- Player Stylesheet -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/style.css"
+    />
+  </head>
+  <body>
+    <!-- Player Script -->
+    <script src="https://cdn.jsdelivr.net/npm/rrweb-player@latest/dist/index.umd.cjs"></script>
+    <script>
+      const events = []; // Paste your recorded events here
+      new rrwebPlayer({
+        target: document.body,
+        props: {
+          events,
+        },
+      });
+    </script>
+  </body>
+</html>
 ```
 
----
-
-With `rrweb` successfully installed, you are now ready to begin recording your first session. Proceed to the next section for a practical example.
-
-**Next:** [Recording a Session](./getting-started-recording-a-session.md)
+With `rrweb` installed, you are now ready to start capturing sessions. The next section will guide you through the recording process.

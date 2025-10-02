@@ -1,140 +1,106 @@
 # Web Extension
 
-The rrweb web extension offers a convenient, code-free method for recording and replaying web page interactions directly within your browser. It captures session data with a simple click, making it an ideal tool for debugging, user behavior analysis, and quality assurance without any code integration.
+The rrweb web extension offers a convenient, code-free method for recording and replaying user sessions directly within your browser. It is available for both Google Chrome and Mozilla Firefox. The extension adds an icon to your browser's toolbar, allowing you to start, pause, and stop recordings with a single click. All recorded data is stored locally in your browser for privacy and immediate access.
 
-This guide covers how to build, install, and use the extension for both Google Chrome and Mozilla Firefox. After recording a session, you can export it and use other tools, such as the [Video Conversion](./tooling-and-extensions-video-conversion.md) utility, to create video files.
+## Installation from Source
 
-## Building and Installing from Source
+To use the extension, you must first build it from the source code. This process requires Node.js and Yarn.
 
-For developers who need to build the extension from its source code, the following steps will guide you through the process.
+### Step 1: Install Dependencies
 
-### 1. Install Dependencies
+First, clone the `rrweb` repository to your local machine. Then, navigate to the `packages/web-extension` directory and install the necessary dependencies by running the following command:
 
-First, navigate to the `packages/web-extension` directory and install the required dependencies using Yarn.
-
-```bash Installation icon=lucide:package
-# Install project dependencies
+```bash
 yarn install
 ```
 
-### 2. Build the Extension
+### Step 2: Build the Extension
 
-Next, run the build command for your target browser. These commands will generate the necessary extension files in a `dist` folder.
+Next, build the extension for your target browser. The build process will generate an unpacked extension in the `dist/` directory.
 
-For Google Chrome:
+**For Google Chrome**
 
-```bash Build for Chrome icon=logos:chrome
+```bash Build for Chrome
 yarn build:chrome
 ```
 
-For Mozilla Firefox:
+**For Mozilla Firefox**
 
-```bash Build for Firefox icon=logos:firefox
+```bash Build for Firefox
 yarn build:firefox
 ```
 
-### 3. Load the Extension in Your Browser
+### Step 3: Load the Extension in Your Browser
 
-Once the build is complete, you can load the unpacked extension into your browser.
+After the build is complete, load the unpacked extension into your browser.
 
-**For Chrome:**
-1.  Navigate to `chrome://extensions`.
-2.  Enable "Developer mode" using the toggle in the top-right corner.
-3.  Click "Load unpacked".
-4.  Select the `dist` directory generated in the previous step.
+**Google Chrome**
 
-**For Firefox:**
-1.  Navigate to `about:debugging`.
-2.  Click "This Firefox" in the sidebar.
-3.  Click "Load Temporary Add-on".
-4.  Select any file inside the `dist` directory.
+1.  Navigate to `chrome://extensions` in your browser.
+2.  Enable the **Developer mode** toggle in the top-right corner.
+3.  Click the **Load unpacked** button.
+4.  Select the `dist/chrome` directory generated in the previous step.
 
-## How to Use the Extension
+**Mozilla Firefox**
 
-After installation, the rrweb icon will appear in your browser's toolbar. Clicking it opens the control popup.
+1.  Navigate to `about:debugging` in your browser.
+2.  Click on the **This Firefox** tab on the left.
+3.  Click the **Load Temporary Add-on...** button.
+4.  Select any file inside the `dist/firefox` directory.
 
-### Recording Controls
+Once loaded, the rrweb icon will appear in your browser's toolbar.
 
-The popup provides a simple interface to manage the recording process.
+## Usage Guide
 
-<x-cards data-columns="2">
-  <x-card data-title="Start/Stop Recording" data-icon="lucide:circle-dot">
-    The main button starts the recording. When active, its icon changes to a square, and clicking it again stops the recording and saves the session.
-  </x-card>
-  <x-card data-title="Pause/Resume Recording" data-icon="lucide:pause-circle">
-    This allows you to temporarily pause the recording. When paused, the icon changes to a play symbol, which you can click to resume.
-  </x-card>
-  <x-card data-title="View Sessions" data-icon="lucide:list">
-    Opens a new tab displaying a list of all your saved recordings. You can view details and replay them directly from this page.
-  </x-card>
-  <x-card data-title="Settings" data-icon="lucide:settings">
-    Opens the extension's options page, where you can configure recording settings.
-  </x-card>
-</x-cards>
+The extension's interface is straightforward, allowing you to manage recordings from a simple popup.
 
-While a recording is active, a timer will display the elapsed time. The extension can seamlessly handle recording across multiple tabs; if you switch to a new tab during a session, the recording will automatically pause on the old tab and resume on the new one.
+### Starting and Stopping a Recording
 
-## How It Works
+1.  Click the rrweb icon in your browser's toolbar to open the popup.
+2.  To begin recording the current tab, click the large circular red button. The recording will start immediately.
+3.  While recording, the button will transform into a square, and a timer will display the elapsed time.
+4.  To stop the recording, click the square red button. The session is automatically saved to your browser's local storage.
 
-The extension is composed of several key components that work together to capture and store session data.
+### Pausing and Resuming
 
-```d2 How It Works Diagram
-direction: down
+You can pause the recording at any time without terminating the session.
 
-User: {
-  shape: c4-person
-}
+*   **To Pause**: While a recording is active, click the pause icon next to the stop button. The timer will halt.
+*   **To Resume**: Click the play icon (resume) to continue recording the session.
 
-Browser-Toolbar: {
-  label: "Browser Toolbar"
-  shape: rectangle
+Notably, the extension automatically handles tab switching. If you navigate to a new tab while recording, the session is paused on the old tab and seamlessly resumed on the new one.
 
-  Extension-Popup: {
-    label: "Extension Popup UI"
-    shape: rectangle
-  }
-}
+### Accessing Recorded Sessions
 
-Background-Script: {
-  label: "Background Script\n(Manages State)"
-  shape: rectangle
-}
+All recorded sessions are stored locally and can be accessed for replay.
 
-Active-Tab: {
-  label: "Active Web Page"
-  shape: rectangle
+*   After stopping a recording, the popup will display a link to the newly created session file.
+*   To view a complete list of all your saved sessions, click the list icon in the top-right corner of the popup. This action opens the session management page in a new tab, where you can view, manage, and replay your recordings.
 
-  Content-Script: {
-    label: "Content Script"
-  }
+## Technical Details
 
-  Injected-Script: {
-    label: "Injected Script (rrweb.record)"
-  }
-}
+The extension operates with a focus on privacy and functionality, requiring specific permissions to function correctly.
 
-Browser-Storage: {
-  label: "Browser Storage\n(IndexedDB)"
-  shape: cylinder
-}
+### Permissions
 
-User -> Browser-Toolbar.Extension-Popup: "1. Clicks icon & 'Start'"
-Browser-Toolbar.Extension-Popup -> Background-Script: "2. Sends 'start' command"
-Background-Script -> Active-Tab.Content-Script: "3. Requests recording start"
-Active-Tab.Content-Script -> Active-Tab.Injected-Script: "4. Injects & starts rrweb"
-Active-Tab.Injected-Script -> Background-Script: "5. Streams events"
-Background-Script -> Browser-Storage: "6. Saves session on stop"
+The extension requires the following browser permissions:
 
-```
+| Permission | Purpose |
+| :--- | :--- |
+| `activeTab` | Allows the extension to access the content of the currently active tab for recording. |
+| `storage` | Used to save user settings and session metadata. |
+| `unlimitedStorage` | Grants permission to store large session recordings in IndexedDB without restrictive size limitations. |
 
-1.  **Popup UI**: The user interacts with the popup to start, stop, or pause recording.
-2.  **Background Script**: Acts as the central controller. It manages the recorder's status (`IDLE`, `RECORDING`, `PAUSED`), listens for commands from the UI, and persists session data.
-3.  **Content Script**: Injected into the active web page. It establishes communication between the web page and the background script.
-4.  **Injected Script**: This script contains the core `rrweb.record()` logic. It is injected into the page by the content script to capture DOM events and mutations.
-5.  **Browser Storage**: All recorded events and session metadata are saved using the browser's `storage` and `unlimitedStorage` permissions, typically in IndexedDB.
+### Data Storage
+
+All session data is stored locally within your browser's IndexedDB. No data is transmitted to external servers, ensuring that your recorded sessions remain private.
+
+### Cross-Origin Iframe Support
+
+The extension is designed to capture a complete user experience, including interactions within cross-origin iframes. It injects a content script into all frames on a page to ensure comprehensive recording coverage.
 
 ## Summary
 
-The rrweb web extension is a powerful tool for capturing user sessions without writing a single line of code. It simplifies the process of recording for analysis and debugging.
+The rrweb web extension is a powerful tool for capturing session recordings without any code integration, simplifying bug reproduction and user behavior analysis.
 
-Once you have captured a session, the next logical step is often to share it or archive it as a video. To learn how, proceed to our guide on [Video Conversion](./tooling-and-extensions-video-conversion.md).
+After recording a session, you may want to convert it into a video format for easier sharing. Proceed to the [Video Conversion](./tooling-and-extensions-video-conversion.md) guide to learn how.

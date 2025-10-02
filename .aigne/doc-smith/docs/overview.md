@@ -1,91 +1,78 @@
 # Overview
 
-rrweb, short for 'record and replay the web', is an open-source JavaScript library that enables you to record and replay user interactions on your web applications. It provides a high-fidelity, pixel-perfect reproduction of a user's session, capturing everything from mouse movements and clicks to DOM mutations and CSS changes.
+`rrweb`, short for 'record and replay the web', is an open-source library that enables you to record and replay user interactions on a web application. It provides a high-fidelity, pixel-perfect reproduction of a user's session, which is invaluable for debugging, user behavior analysis, and providing remote assistance.
 
-This capability is invaluable for a variety of use cases, including:
+Unlike screen recording tools that produce video, rrweb captures user interactions as a series of structured, timestamped events. This data format is lightweight, easily searchable, and allows for precise analysis and inspection of the application's state at any point in time.
 
-- **Bug Reproduction**: Eliminate guesswork by seeing the exact sequence of actions a user took to encounter a bug.
-- **User Experience Analysis**: Gain insights into how users interact with your application, identify points of friction, and validate design choices.
-- **Customer Support**: Resolve support tickets more efficiently by viewing a user's session to understand their issue.
+## How It Works
 
-## Core Functionalities
+The core functionality of rrweb is divided into two distinct phases: recording and replaying.
 
-rrweb's functionality is centered around two primary operations: recording and replaying.
+1.  **Recording**: When a recording session begins, rrweb first takes a complete snapshot of the Document Object Model (DOM). This initial snapshot serves as the baseline. After that, it uses the `MutationObserver` API to listen for all subsequent changes to the DOM, such as text input, mouse movements, clicks, and style changes. These changes, or mutations, are captured as incremental events.
 
-### Recording
+2.  **Replaying**: The replayer takes the initial DOM snapshot and the stream of mutation events as input. It first reconstructs the initial state of the page in a sandboxed environment (typically an `iframe`). Then, it applies each mutation event in the exact order and with the same timing as it originally occurred, accurately recreating the user's session.
 
-The recording process captures a complete picture of the web page's state and subsequent changes. It begins by taking a full snapshot of the Document Object Model (DOM). After this initial snapshot, it subscribes to all changes using the `MutationObserver` API, recording every mutation, user interaction (like mouse clicks and input changes), and other events as a timestamped, serializable data entry. This stream of events, known as "events," represents the entire user session.
+This approach ensures a precise and efficient way to capture and replay web sessions, providing developers with a powerful tool for understanding and troubleshooting their applications.
 
-### Replaying
+## Architecture
 
-The replaying process reconstructs the recorded session in a sandboxed environment, typically an `<iframe>`. The replayer first rebuilds the initial DOM from the snapshot. Then, it iterates through the stream of mutation events, applying each one at the correct time to accurately recreate the user's interactions and the application's responses.
+rrweb is designed with a modular architecture, consisting of several key packages that work together to provide its recording and replaying capabilities. Understanding these components is helpful for customizing and extending rrweb's functionality.
 
 ```d2
-direction: down
+direction: right
 
-User: {
-  shape: c4-person
+subgraph "User's Browser Session" {
+  style.fill: "#f0f4f8"
+  Browser: "Live DOM & Interactions"
 }
 
-Your-Application: {
-  label: "Your Web Application"
-  shape: rectangle
-
-  rrweb-recorder: {
-    label: "rrweb Recorder"
-    shape: rectangle
+subgraph "Recording Process" {
+  style.fill: "#e6f7ff"
+  Record [shape: hexagon, label: "rrweb.record()"]: {
+    Snapshot [shape: document, label: "rrweb-snapshot"]: Captures the initial DOM state.
+    Observer [shape: oval, label: "MutationObserver"]: Listens for all subsequent changes.
   }
+  Browser -> Record: "User interacts with page"
+  Record.Snapshot -> Events: "Initial Snapshot Event"
+  Record.Observer -> Events: "Stream of Mutation Events"
 }
 
-Backend: {
-  label: "Your Backend"
-  shape: rectangle
-
-  Event-Storage: {
-    label: "Event Storage"
-    shape: cylinder
+subgraph "Replaying Process" {
+  style.fill: "#e6fffb"
+  Replayer [shape: hexagon, label: "rrweb.Replayer() or rrweb-player"]: {
+    Rebuild [shape: document, label: "rrweb-snapshot"]: Reconstructs the DOM from the snapshot.
+    Apply [shape: oval, label: "Event Application"]: Applies mutations sequentially.
   }
+  Events -> Replayer: "Feeds into replayer"
+  Replayer.Rebuild -> "Replayed Session"
+  Replayer.Apply -> "Replayed Session"
 }
 
-Developer-View: {
-  label: "Developer View"
-  shape: rectangle
+Events [shape: cylinder, label: "Serialized Events (JSON)"]
 
-  rrweb-replayer: {
-    label: "rrweb Replayer"
-    shape: rectangle
-  }
 
-  Sandbox: {
-    label: "Sandboxed iframe"
-    shape: rectangle
-    style.stroke-dash: 4
-  }
+classDef default {
+  font-size: 14
+  font-family: "Menlo", "Monaco", monospace
 }
-
-User -> Your-Application: "Interacts with UI"
-Your-Application.rrweb-recorder -> Backend.Event-Storage: "1. Record & send events"
-Developer-View.rrweb-replayer -> Backend.Event-Storage: "2. Fetch events"
-Developer-View.rrweb-replayer -> Developer-View.Sandbox: "3. Replay session"
 
 ```
 
-## Project Architecture
-
-rrweb is a monorepo composed of several specialized packages. Understanding their roles is key to effectively using the library.
-
-<x-cards data-columns="3">
-  <x-card data-title="rrweb" data-icon="lucide:file-json-2">
-    The core package that orchestrates the recording and replaying processes. It integrates the snapshot and rebuilding functionalities to capture and reproduce sessions.
+<x-cards data-columns="2">
+  <x-card data-title="rrweb" data-icon="lucide:file-json">
+    The core package that orchestrates the recording and replaying processes. It integrates `rrweb-snapshot` to capture the DOM and listens for changes to generate a stream of events.
   </x-card>
   <x-card data-title="rrweb-snapshot" data-icon="lucide:camera">
-    This package is responsible for the foundational tasks of converting a live DOM into a serializable data structure (snapshotting) and rebuilding the DOM from that data.
+    A utility for converting a DOM tree into a serializable data structure. It also includes the logic for rebuilding the DOM from this serialized format, which is essential for both the initial snapshot and the final replay.
   </x-card>
   <x-card data-title="rrweb-player" data-icon="lucide:play-circle">
-    A feature-rich, pre-built player component with a graphical user interface (GUI) for replaying sessions. It includes controls for play/pause, seeking, and adjusting playback speed.
+    A pre-built, feature-rich player component that provides a user interface for replaying rrweb sessions. It includes controls for play/pause, seeking, and adjusting playback speed.
+  </x-card>
+  <x-card data-title="@rrweb/types" data-icon="lucide:file-type">
+    A dedicated package containing all the TypeScript type definitions shared across the rrweb ecosystem, ensuring type safety and consistency between the different packages.
   </x-card>
 </x-cards>
 
 ## Next Steps
 
-Now that you have a high-level understanding of what rrweb is and how it works, the next logical step is to see it in action. Proceed to the [Getting Started](./getting-started.md) guide to learn how to install rrweb and record your first session.
+Now that you have a high-level understanding of what rrweb is and how it works, the next logical step is to see it in action. Proceed to the [Getting Started](./getting-started.md) guide for a quick tutorial on how to install rrweb and record your first session.

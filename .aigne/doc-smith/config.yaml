@@ -65,7 +65,7 @@ sourcesPath:  # Source code paths to analyze
   - ./packages
   - ./docs
   - ./README.md
-lastGitHead: 76df9799ecc14930fa914e5623a73ea7726e3747
+lastGitHead: c186b097358c6bde55cf60d2394e3bd09f22fb86
 appUrl: https://docsmith.aigne.io
 boardId: rrweb
 # Checkout ID for document deployment service

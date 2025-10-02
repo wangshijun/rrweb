@@ -1,134 +1,135 @@
 # DOM Snapshot
 
-The `rrweb-snapshot` package is a foundational component of rrweb. Its primary responsibility is to convert a live Document Object Model (DOM) into a stateful, serializable data structure. It also provides the functionality to rebuild the DOM from this structure, which is the core mechanism enabling session replay.
+The `rrweb-snapshot` package is the engine responsible for converting a live Document Object Model (DOM) into a stateful, serializable data structure and, conversely, rebuilding a DOM from that structure. This process is fundamental to how rrweb captures the initial state of a page for replay. It provides the foundational snapshot that all subsequent incremental changes are applied to.
 
-This process is more complex than simply cloning the DOM. A DOM object itself is not serializable, meaning it cannot be converted to a text format like JSON for storage or transmission. The snapshot process intelligently captures the necessary information to create a portable and accurate representation of the web page's view.
+This functionality is used by the [Recording Engine](./core-packages-recording-engine.md) to create the first event in a session and by the [Player Component](./core-packages-player-component.md) to construct the initial DOM state before applying mutations.
 
 ## The Serialization Process
 
-To ensure a faithful reconstruction of the user's view, `rrweb-snapshot` performs several critical transformations during the serialization process:
+To transmit and store a representation of a web page, its DOM structure must be converted into a serializable format like JSON. The `rrweb-snapshot` library implements a non-standard serialization process tailored for accurate replay, which includes several key transformations:
 
-- **Stateful Capture**: It records dynamic states that are not reflected in the static HTML. For example, the current value of an `<input>` element or the scroll position of an element is captured and stored as an attribute in the snapshot.
-- **Path Resolution**: All relative paths in attributes like `src`, `href`, and within CSS stylesheets (`url()`) are converted to absolute paths. This prevents broken links and missing resources when the session is replayed in a different environment.
-- **Stylesheet Inlining**: To guarantee visual fidelity, external stylesheets linked via `<link>` tags are parsed, and their CSS rules are embedded directly into the snapshot. This ensures that styles are applied correctly, even if the original stylesheet is no longer accessible.
-- **Script Neutralization**: All `<script>` tags are converted into `<noscript>` tags. This is a crucial security and stability measure that prevents any JavaScript from the original page from executing during replay.
-- **Unique Node Identification**: Each node in the DOM tree is assigned a unique, sequential `id`. This identifier is essential for the incremental snapshot system, allowing rrweb to precisely target which node was added, removed, or modified.
+- **Unique Identification**: Each node in the DOM is assigned a unique, incrementing `id`. This is crucial for tracking nodes and applying incremental changes correctly during replay.
+- **State Capture**: Dynamic states that are not reflected in the HTML source, such as the current value of an `<input>` field or the scroll position of an element, are captured and stored as special attributes.
+- **Path Absolutization**: Relative paths in attributes like `href`, `src`, and within CSS stylesheets are converted to absolute URLs. This ensures that resources load correctly when the session is replayed in a different context (e.g., inside an `<iframe>` on a different domain).
+- **Stylesheet Inlining**: To guarantee that all styles are applied correctly during replay, external stylesheets (`<link rel="stylesheet">`) are fetched, parsed, and their rules are inlined into the snapshot as text content.
+- **Script Sanitization**: All `<script>` tags are transformed into `<noscript>` tags. This prevents any JavaScript from the original page from executing during replay, as rrweb replays the *effects* of scripts, not the scripts themselves.
 
-Here is an example of a simple DOM tree and its corresponding serialized JSON structure:
+### Example of a Serialized DOM
 
-```html HTML Structure
+A simple HTML structure like this:
+
+```html
 <html>
   <body>
-    <header></header>
+    <header>Hello</header>
   </body>
 </html>
 ```
 
-```json Serialized Output icon=logos:javascript
+Is serialized into a JSON object that represents the entire node tree, with each node having a type, tagName, attributes, child nodes, and a unique `id`:
+
+```json
 {
-  "type": 3, // Corresponds to NodeType.Element
-  "tagName": "html",
-  "attributes": {},
+  "type": 0,
   "childNodes": [
     {
-      "type": 3,
-      "tagName": "head",
-      "attributes": {},
-      "childNodes": [],
-      "id": 3
-    },
-    {
-      "type": 3,
-      "tagName": "body",
+      "type": 2,
+      "tagName": "html",
       "attributes": {},
       "childNodes": [
         {
-          "type": 2, // Corresponds to NodeType.Text
-          "textContent": "\n    ",
-          "id": 5
-        },
-        {
-          "type": 3,
-          "tagName": "header",
+          "type": 2,
+          "tagName": "head",
           "attributes": {},
           "childNodes": [],
-          "id": 6
+          "id": 3
+        },
+        {
+          "type": 2,
+          "tagName": "body",
+          "attributes": {},
+          "childNodes": [
+            {
+              "type": 2,
+              "tagName": "header",
+              "attributes": {},
+              "childNodes": [
+                {
+                  "type": 3,
+                  "textContent": "Hello",
+                  "id": 6
+                }
+              ],
+              "id": 5
+            }
+          ],
+          "id": 4
         }
       ],
-      "id": 4
+      "id": 2
     }
   ],
-  "id": 2
+  "id": 1
 }
 ```
 
-## Core API
+## The Reconstruction Process
 
-The `rrweb-snapshot` package exports several functions, but the two primary ones you will interact with are `snapshot` and `rebuild`.
+Reconstruction is the reverse process of serialization. It takes the serialized node tree and builds a live DOM from it. This is typically done inside an `<iframe>` to provide an isolated environment for the replay.
 
-### `snapshot()`
+Internally, rrweb uses its own virtual DOM implementation, **rrdom**, to efficiently manage the reconstructed DOM and apply subsequent mutations. `rrdom` is designed to mirror the behavior of a real DOM, providing a performance-optimized layer for applying changes, which is especially useful when seeking to different points in a session timeline.
 
-This function traverses a given DOM tree (starting from the `document` node) and generates a complete, serializable snapshot.
+The reconstruction process involves:
 
-```javascript Take a Snapshot icon=logos:javascript
-import { snapshot } from 'rrweb-snapshot';
-import { Mirror } from 'rrweb-snapshot';
+1.  Creating DOM nodes (`Element`, `Text`, `Comment`, etc.) based on the `type` and `tagName` specified in the serialized data.
+2.  Recursively building the entire DOM tree by appending child nodes.
+3.  Setting all attributes on the elements, including special `rr_` attributes that restore state like scroll positions (`rr_scrollTop`) and media playback status (`rr_mediaState`).
+4.  Injecting inlined CSS rules into `<style>` tags.
 
-// A mirror is needed to map nodes to unique IDs.
-const mirror = new Mirror();
+## Manual Snapshot and Reconstruction API
 
-// Take a snapshot of the current document.
-const serializedDocument = snapshot(document, {
-  mirror,
-  // other options...
-});
+The `rrweb-snapshot` package exports functions that allow you to manually perform serialization and reconstruction. This can be useful for debugging or for custom applications that require DOM snapshots.
 
-console.log(serializedDocument);
+### Core Functions
+
+| Function | Description |
+| :--- | :--- |
+| `snapshot(n, options?)` | Traverses a DOM node (usually `document`) and returns its serializable representation. |
+| `rebuild(n, options)` | Reconstructs a DOM tree from a serialized node object. Requires a target `doc` (e.g., an iframe's `contentDocument`). |
+| `serializeNodeWithId(n, options)` | A lower-level function that serializes a single node into the snapshot format and assigns it an ID. |
+| `buildNodeWithSN(sn, options)` | A lower-level function that builds a single DOM node from a serialized node (`sn`). |
+
+### Usage Example
+
+Here is a basic example of how to take a snapshot of the current page and rebuild it in a new `<iframe>`.
+
+```javascript Snapshot and Rebuild Flow icon=logos:javascript
+import { snapshot, rebuild } from 'rrweb-snapshot';
+
+// 1. Take a snapshot of the current document.
+// The snapshot function returns a serializable representation of the DOM.
+const serializedDocument = snapshot(document);
+
+if (serializedDocument) {
+  // The 'serializedDocument' object can be sent over the network or stored.
+  // For example: const snapshotJSON = JSON.stringify(serializedDocument);
+
+  // 2. To rebuild, create a target document, typically in an iframe.
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '500px';
+  document.body.appendChild(iframe);
+  const targetDoc = iframe.contentDocument;
+
+  // 3. Rebuild the DOM from the serialized object inside the iframe.
+  if (targetDoc) {
+    rebuild(serializedDocument, { doc: targetDoc });
+  }
+}
 ```
 
-The `snapshot` function returns the serialized node tree, which can then be stored or sent to a server. It takes the node to be snapshotted and an optional configuration object as arguments.
+## Summary
 
-### `rebuild()`
+The `rrweb-snapshot` package is a cornerstone of rrweb, providing the essential mechanisms for DOM serialization and reconstruction. It transforms a live, complex DOM into a portable, replayable format through a series of intelligent transformations. Understanding this process is key to comprehending how rrweb achieves high-fidelity session recording and replay.
 
-This function takes a serialized node tree and reconstructs the corresponding DOM within a target document, which is typically an `<iframe>` for sandboxing.
-
-```javascript Rebuild a Snapshot icon=logos:javascript
-import { rebuild } from 'rrweb-snapshot';
-import { Mirror } from 'rrweb-snapshot';
-
-// Assume 'serializedDocument' is the output from the snapshot() function.
-// You also need a mirror for the rebuild process.
-const mirror = new Mirror();
-
-// Create an iframe to host the replay.
-const iframe = document.createElement('iframe');
-iframe.style.width = '800px';
-iframe.style.height = '600px';
-document.body.appendChild(iframe);
-
-// Rebuild the DOM inside the iframe.
-const [rebuiltNode, unsubscribe] = rebuild(serializedDocument, {
-  doc: iframe.contentDocument,
-  mirror,
-});
-
-// Clean up the listeners when done.
-// unsubscribe();
-```
-
-The `rebuild` function returns a tuple containing the rebuilt node (or `null`) and an `unsubscribe` function to clean up any internal listeners that were set up.
-
-## Low-Level APIs
-
-For more granular control, the package also exposes the functions that `snapshot` and `rebuild` use internally:
-
-- **`serializeNodeWithId(node, options)`**: Serializes a single DOM node and its children into the snapshot format, assigning unique IDs.
-- **`buildNodeWithSN(serializedNode, options)`**: Constructs a DOM node from a serialized node object, mapping it in the provided mirror.
-
-These are generally used for advanced use cases or when building custom tooling on top of rrweb's serialization logic.
-
----
-
-In summary, the DOM snapshot mechanism is the bedrock of rrweb's ability to record and replay web sessions. By converting the DOM into a portable format and providing the tools to reconstruct it, `rrweb-snapshot` enables the entire session replay workflow.
-
-To see how these snapshots are utilized in a full recording, please refer to the [Recording Engine](./core-packages-recording-engine.md) documentation.
+For more information on how this snapshot is used, see the [Player Component](./core-packages-player-component.md) documentation.

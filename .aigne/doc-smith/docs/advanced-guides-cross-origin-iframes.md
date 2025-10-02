@@ -1,123 +1,83 @@
 # Cross-Origin Iframes
 
-Recording user interactions within a cross-origin iframe presents a challenge due to browser security restrictions, specifically the Same-Origin Policy. This policy prevents a script on one page from accessing the content of an iframe from another origin. `rrweb` provides a mechanism to bypass this for recording purposes, but it requires careful setup and a thorough understanding of the security implications.
+By default, browser security policies prevent a parent window from accessing the content of an `iframe` loaded from a different domain. This is a crucial security feature known as the Same-Origin Policy. While this policy is in place for protection, `rrweb` provides a mechanism to record user sessions that span across these cross-origin boundaries, provided you have control over both the parent and child pages.
 
-This guide covers the necessary configuration to record sessions across different domains and highlights the critical security considerations you must address before implementation.
+This guide covers the necessary setup, security considerations, and different methods for enabling recording in cross-origin iframes.
 
 ## How It Works
 
-`rrweb`'s solution involves running a `rrweb` recorder instance on both the parent page and within the cross-origin iframe. The process unfolds as follows:
+The cross-origin recording mechanism in `rrweb` relies on the `window.postMessage` API for communication between the iframe and its parent window.
 
-1.  **Iframe Recording**: The `rrweb` instance inside the iframe captures all user interactions and DOM changes as it normally would.
-2.  **Event Communication**: Instead of emitting these events for local replay, the iframe's recorder serializes them and sends them to the parent window using the `window.postMessage()` API.
-3.  **Parent Reception**: The parent window's `rrweb` instance listens for these messages.
-4.  **ID Transformation**: To avoid conflicts between the DOM node IDs of the parent page and the iframe, the parent recorder transforms all IDs within the received events. This ensures every element in the combined recording has a unique identifier.
-5.  **Event Consolidation**: The transformed events from the iframe are then integrated into the main session recording, creating a single, seamless replay.
+1.  **Child Iframe**: An `rrweb` recorder instance within the cross-origin iframe captures events as it normally would. Instead of emitting them for local storage or transmission, it sends them to the parent window via `postMessage`.
+2.  **Parent Page**: The main `rrweb` recorder on the parent page listens for `message` events. When it receives an event from a recognized child iframe, it processes the event.
+3.  **Event Transformation**: To prevent conflicts, the parent recorder transforms the incoming event data, primarily by re-mapping node IDs from the iframe to ensure they are unique within the context of the entire session. The transformed event is then integrated into the main recording stream.
 
-```d2 Data Flow for Cross-Origin Recording
-direction: down
+## Configuration
 
-parent-window: {
-  label: "Parent Window"
-  shape: rectangle
+To enable cross-origin iframe recording, you must configure `rrweb` on both the parent page and the page loaded inside the iframe.
 
-  rrweb-recorder: {
-    label: "rrweb.record()"
-    style.fill: "#d1e7dd"
-  }
-  
-  event-handler: {
-    label: "Message Event Listener"
-  }
-}
+### Parent Page Setup
 
-child-iframe: {
-  label: "Cross-Origin Iframe"
-  shape: rectangle
-  style: {
-    stroke: "#888"
-    stroke-width: 2
-    stroke-dash: 4
-  }
-  
-  rrweb-child: {
-    label: "rrweb.record()"
-    style.fill: "#d1e7dd"
-  }
-}
+In the parent window, initialize the recorder with the `recordCrossOriginIframes` option set to `true`. This enables the recorder to listen for and process events sent from child iframes.
 
-parent-window.rrweb-recorder -> parent-window.event-handler: "Listens for messages"
-child-iframe.rrweb-child -> parent-window.event-handler: "1. Sends events via postMessage()"
-parent-window.event-handler -> parent-window.rrweb-recorder: "2. Forwards events"
-parent-window.rrweb-recorder -> parent-window.rrweb-recorder: "3. Transforms IDs &\n Emits to main recording"
-
-```
-
-## Enabling Cross-Origin Recording
-
-To enable this feature, you must configure `rrweb` on both the parent (embedding) page and the child (embedded) page.
-
-### Parent Page Configuration
-
-In the top-level window that contains the iframe, initialize `rrweb` with the `recordCrossOriginIframes` option set to `true`. This instance will listen for events from child iframes and merge them into a single recording.
-
-```javascript Parent Page Setup icon=logos:javascript
+```javascript Parent Page Configuration icon=logos:javascript
 rrweb.record({
   emit(event) {
-    // All events, including those from iframes, will be emitted here.
+    // All events, including those from cross-origin iframes, will be emitted here.
   },
   recordCrossOriginIframes: true,
 });
 ```
 
-### Child Iframe Configuration
+### Iframe Page Setup
 
-In the page that will be loaded inside the iframe, you must also initialize `rrweb` with `recordCrossOriginIframes: true`. This tells the recorder to send its events to the parent window instead of emitting them locally.
+Similarly, the page that will be loaded into the iframe must also have an `rrweb` recorder initialized with `recordCrossOriginIframes: true`. This tells the recorder to send its events to the parent window instead of emitting them locally.
 
-```javascript Iframe Page Setup icon=logos:javascript
+```javascript Iframe Page Configuration icon=logos:javascript
 rrweb.record({
   emit(event) {
-    // This is required, but the child page will not emit any events.
-    // Events are sent to the parent window via postMessage.
+    // This function is required by rrweb, but no events will be emitted here
+    // when the page is in a cross-origin iframe.
   },
   recordCrossOriginIframes: true,
 });
 ```
 
-## Important Security Considerations
+If `rrweb` is not running in the top-level window, any events captured within the iframe will be lost.
 
-Enabling cross-origin iframe recording effectively disables a critical browser security feature for your website. You should only use this feature if you have complete control over both domains and fully trust them. Be aware of the following risks:
+## Security Considerations
 
--   **Data Exposure**: If you enable this feature on your website, any other website on the internet can embed your site in an iframe and record everything that happens within it, potentially capturing sensitive user data.
--   **Malicious Parent Window**: If a malicious website embeds your page, it can listen for all the events your page sends and transmit them to its own servers.
--   **Unencrypted Communication**: The `postMessage` API does not encrypt data. Malicious scripts or browser extensions running on the page could intercept the communication between the child iframe and the parent window, gaining access to the raw session data.
+Enabling this feature bypasses standard browser security controls and introduces risks that must be carefully considered.
 
-**Recommendation:** Only enable this feature in a tightly controlled environment. A common valid use case is an application suite where different parts of the application are hosted on separate subdomains but are part of the same trusted ecosystem.
+-   **Malicious Host Page**: If your website (the child iframe) is embedded into a malicious third-party site, that site's `rrweb` instance can record all user interactions within your application's iframe.
+-   **Event Sniffing**: The communication via `postMessage` is not encrypted. Malicious scripts running on the parent page can listen for these messages and intercept the raw event data, potentially exposing sensitive information.
 
-## Injecting `rrweb` into Iframes
+Due to these risks, you should only enable this feature if you have strict control over the websites allowed to embed your application.
 
-Here are several methods for ensuring the `rrweb` recording script is present in your cross-origin iframes.
+## Methods for Injecting rrweb into Iframes
+
+Here are several common strategies for ensuring the `rrweb` recording script is present in your cross-origin iframes.
 
 ### 1. Direct Script Inclusion
 
-If you own and control the source code for both the parent and child websites, the most straightforward method is to include the `rrweb` script and the necessary configuration on both pages directly.
+If you own the source code for both the parent page and the embedded page, the simplest method is to include the `rrweb` script tag in the HTML of both pages.
 
-### 2. Browser Extension
+### 2. Browser Extensions
 
-For scenarios where you don't control the iframe's source, a browser extension can be used to inject content scripts into any page, including iframes. This allows you to programmatically add the `rrweb` recorder.
+A browser extension can use content scripts to inject `rrweb` into any page, including iframes, regardless of their origin. This is a powerful method for building developer tools or support applications.
 
-For more details, refer to the [Chrome Extension documentation on Content Scripts](https://developer.chrome.com/docs/extensions/mv3/content_scripts/#functionality).
+For more details, refer to the [Chrome Extension documentation on content scripts](https://developer.chrome.com/docs/extensions/mv3/content_scripts/#functionality).
 
-### 3. Puppeteer Script
+### 3. Puppeteer for Automated Environments
 
-For automated testing or server-side recording environments, you can use a tool like Puppeteer to inject the recorder into all frames of a page.
+When running tests or generating recordings in an automated environment like Puppeteer, you can inject the recording script into all frames as they are navigated.
 
 ```javascript Puppeteer Injection Script icon=logos:javascript
 import puppeteer from 'puppeteer';
 
-// Assuming 'code' contains the bundled rrweb code as a string.
+// Assume 'rrwebCode' contains the bundled rrweb library as a string
 
-async function injectRecording(frame, code) {
+async function injectRecording(frame) {
   await frame.evaluate((rrwebCode) => {
     if (window.__IS_RECORDING__) return;
     window.__IS_RECORDING__ = true;
@@ -129,57 +89,51 @@ async function injectRecording(frame, code) {
 
     window.rrweb.record({
       emit: (event) => {
-        // Expose a function to send events back to the Puppeteer context.
+        // Expose an event capture function to the Puppeteer context
         window._captureEvent(event);
       },
       recordCrossOriginIframes: true,
     });
-  }, code);
+  }, rrwebCode);
 }
 
-async function main() {
-  const browser = await puppeteer.launch();
-  const page = (await browser.pages())[0];
+const browser = await puppeteer.launch();
+const page = (await browser.pages())[0];
 
-  const events = []; // Contains all events from all frames
+const events = []; // All events from all frames will be collected here
 
-  // Expose a function on the page that can be called from the browser context.
-  await page.exposeFunction('_captureEvent', (event) => {
-    events.push(event);
-  });
+// Expose a function from Node.js to the browser context
+await page.exposeFunction('_captureEvent', (event) => {
+  events.push(event);
+});
 
-  // Listen for new frames and inject the script.
-  page.on('framenavigated', async (frame) => {
-    await injectRecording(frame, rrwebCode); // Pass your rrweb code here
-  });
+// Inject rrweb into each frame as it loads
+page.on('framenavigated', async (frame) => {
+  await injectRecording(frame);
+});
 
-  await page.goto('https://example.com');
+await page.goto('https://example.com');
 
-  // At this point, `events` array will be populated with rrweb events.
-  console.log(events);
-}
+// The 'events' array now contains the recording data.
 ```
 
-### 4. Electron Application
+### 4. Electron Applications
 
-In an Electron application, you can use preload scripts to inject `rrweb` into a `BrowserWindow` and its iframes. Preload scripts have access to Node.js APIs and the document context.
+In an Electron application, you can use a `preload` script to reliably inject `rrweb` into all web contents, including iframes. To ensure the preload script runs in sub-frames, you need to configure the `webPreferences` of your `BrowserWindow`.
 
 ```typescript Electron Preload Configuration icon=logos:electron
-import { BrowserWindow } from 'electron';
-import path from 'path';
-
 const win = new BrowserWindow({
   width: 800,
   height: 600,
   webPreferences: {
-    // Specify the script to run before other scripts on the page.
+    // Path to your recording script
     preload: path.join(__dirname, 'rrweb-recording-script.js'),
-    // This enables the preload script to run inside iframes.
+    // This allows the preload script to run in iframes
     nodeIntegrationInSubFrames: true,
-    // It's a good security practice to disable nodeIntegration in the renderer.
+    // It's a good practice to disable nodeIntegration for security
     nodeIntegration: false,
   },
 });
 ```
 
-For more details, consult the official Electron documentation on [Preload Scripts](https://www.electronjs.org/docs/latest/tutorial/tutorial-preload).
+For more information, see the Electron documentation on [Preload Scripts](https://www.electronjs.org/docs/latest/tutorial/tutorial-preload).

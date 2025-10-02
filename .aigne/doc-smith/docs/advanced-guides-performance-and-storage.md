@@ -1,54 +1,58 @@
 # Performance and Storage
 
-In applications with high user activity or complex user interfaces, rrweb can generate a significant amount of data. Managing this data is crucial for both performance and storage costs. This guide provides several practical strategies to optimize the size of your session recordings.
+Session recordings with rrweb can sometimes generate a significant amount of data, especially for applications with high user activity or complex interfaces. Managing this data volume is crucial for both performance and storage efficiency. This guide provides several practical strategies to optimize the size of your rrweb recordings.
 
 We will cover the following optimization techniques:
 
-- **Event Sampling**: Reducing the frequency or disabling certain types of events.
-- **DOM Element Blocking**: Excluding specific parts of the UI from being recorded.
-- **Data Compression**: Shrinking the size of recorded event data.
-- **Deduplication**: Removing redundant data, such as inline CSS, across sessions.
+- **Event Sampling**: Reducing the frequency of certain recorded events.
+- **Blocking DOM Elements**: Excluding specific parts of the UI from the recording.
+- **Data Compression**: Compressing event data in real-time or as a batch process.
+- **Data Deduplication**: Removing redundant data, such as repeated CSS styles, across sessions.
 
 ## Event Sampling
 
-One of the most effective ways to reduce data volume is to sample events. You can configure rrweb to ignore certain high-frequency events or limit how often they are captured. This is configured via the `sampling` option in `rrweb.record()`.
+One of the most effective ways to reduce data size is to sample events. The `sampling` configuration option allows you to either disable certain types of events entirely or limit their emission frequency.
 
-Common strategies include disabling mouse movement tracking or throttling scroll and media events.
+### General Event Sampling
 
-```javascript Event Throttling and Disabling icon=logos:javascript
+You can configure sampling for mouse movements, mouse interactions, scrolling, media interactions, and input events.
+
+```javascript Configuring Event Sampling icon=logos:javascript
 rrweb.record({
   emit(event) {
-    // ... send event to your backend
+    // store the event
   },
   sampling: {
-    // Disable mouse movement recording entirely.
+    // Disable mouse movement recording
     mousemove: false,
-    // Disable all mouse interaction events.
+    // Disable all mouse interaction recording
     mouseInteraction: false,
-    // Emit a scroll event at most once every 150ms.
-    scroll: 150,
-    // Emit a media interaction event at most once every 800ms.
+    // Emit a scroll event at most once every 150ms
+    scroll: 150, 
+    // Emit a media interaction event at most once every 800ms
     media: 800,
-    // For rapid text input, only record the final state.
-    input: 'last',
+    // For multiple characters typed in a short time, only record the final input value
+    input: 'last', 
   },
 });
 ```
 
-For more granular control, you can specify exactly which mouse interactions to record.
+### Fine-Grained Mouse Interaction Sampling
 
-```javascript Selective Mouse Interaction Recording icon=logos:javascript
+If you need more control over which mouse interactions are recorded, you can provide a detailed object for the `mouseInteraction` option.
+
+```javascript Fine-Grained Mouse Interaction Sampling icon=logos:javascript
 rrweb.record({
   emit(event) {
-    // ...
+    // store the event
   },
   sampling: {
     mouseInteraction: {
       MouseUp: false,
       MouseDown: false,
-      Click: true, // Only record click events
+      Click: true,
       ContextMenu: false,
-      DblClick: true, // and double-click events
+      DblClick: true,
       Focus: false,
       Blur: false,
       TouchStart: false,
@@ -60,54 +64,58 @@ rrweb.record({
 
 ## Blocking DOM Elements
 
-Certain UI elements can generate a large number of mutations, leading to excessive event data. Common examples include elements with JavaScript-controlled animations, complex SVG graphics, or long, dynamic lists. You can instruct rrweb to ignore these elements completely by adding a specific block class.
+Certain parts of your application may generate a large number of mutations without being critical to understanding the user's session. You can prevent rrweb from recording these elements by adding a specific block class.
 
-This prevents any events originating from the element or its descendants from being recorded, effectively reducing the recording area.
+Common sources of high event volume include:
 
-Common candidates for blocking include:
-- Long, virtualized lists
-- Complex SVG diagrams or animations
-- Elements with continuous JS-driven animations
-- Canvas animations
+-   Infinitely scrolling lists
+-   Complex SVG animations
+-   Elements with JavaScript-controlled animations
+-   Canvas-based animations
+
+By strategically blocking these elements, you can significantly reduce the recording's size and complexity.
 
 ## Data Compression
 
-After reducing the number of events, you can further shrink the storage size by compressing the event data itself. There are two primary approaches to this.
+Compression is another powerful technique for minimizing storage requirements. You can apply compression either at the event level during recording or to the entire session data afterward.
 
-### Per-Event Compression with `packFn`
+### Event-Level Compression with `packFn`
 
-rrweb provides a utility package, `@rrweb/packer`, which can compress each event individually before it is emitted. This is accomplished by passing the `pack` function to the `packFn` recording option.
+rrweb provides the `@rrweb/packer` package, which uses `fflate` to compress each event as it's captured. To use it, you must provide the `pack` function during recording and the `unpack` function during replay.
 
-```javascript Recording with packFn icon=logos:javascript
+**Recording with Compression**
+
+```javascript Recording with Compression icon=logos:javascript
 import { pack } from '@rrweb/packer';
 
 rrweb.record({
   emit(event) {
     // The 'event' is now a compressed string.
+    // Send it to your backend for storage.
   },
   packFn: pack,
 });
 ```
 
-To replay the session, you must use the corresponding `unpack` function.
+**Replaying Compressed Events**
 
-```javascript Replaying with unpackFn icon=logos:javascript
+```javascript Replaying Compressed Events icon=logos:javascript
 import { unpack } from '@rrweb/packer';
 
-// 'events' is an array of compressed strings from the backend.
+// 'events' is an array of compressed strings from your backend.
 const replayer = new rrweb.Replayer(events, {
   unpackFn: unpack,
 });
 ```
 
-### Full-Session Compression (Recommended)
+### Full Session Compression
 
-While `packFn` is convenient for client-side compression, a more efficient method is to compress the entire session on your backend. Batching all events from a session together allows compression algorithms like deflate to achieve a significantly higher compression ratio by leveraging redundancies across the entire event array.
+While event-level compression is convenient, you can often achieve a higher compression ratio by compressing the entire session's data at once. This approach is best implemented on your backend after receiving all events for a session. Standard compression algorithms like deflate or zlib are highly effective for this purpose, as they can leverage the repetitive nature of the entire event stream.
 
-This approach is the recommended best practice for production systems as it yields the best storage optimization.
+## Data Deduplication
 
-## Deduplication
+To accurately replay user interactions like hover effects, rrweb inlines CSS styles directly into the recorded events. Across many sessions, this can lead to a large amount of duplicated style data. 
 
-Another advanced optimization strategy is deduplication, which is particularly effective for applications with consistent UI elements across many sessions. rrweb inlines CSS styles to ensure pixel-perfect replay, but this can lead to the same style blocks being stored thousands of times.
+A more advanced optimization strategy is to implement deduplication on your backend. This involves iterating through the events, extracting the CSS styles, and storing only a single, canonical copy. The same principle can be applied to full DOM snapshots, which may be very similar across different user sessions.
 
-By post-processing recorded sessions on your backend, you can extract these duplicated CSS rules, store a single copy, and replace the inline styles with a reference. This technique can also be applied to full DOM snapshots, offering substantial storage savings over time.
+By implementing these strategies, you can effectively manage the performance and storage footprint of your rrweb recordings, ensuring the system remains scalable and efficient.

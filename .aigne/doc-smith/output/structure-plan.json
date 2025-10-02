@@ -3,51 +3,56 @@
     "title": "Overview",
     "description": "Provides a high-level introduction to rrweb, explaining the problems it solves, its core functionalities like recording and replaying, and the overall architecture of its packages.",
     "path": "/overview",
-    "parentId": "",
     "sourceIds": [
       "README.md",
       "packages/rrweb/README.md",
-      "packages/rrweb/package.json"
-    ]
+      "packages/rrweb/package.json",
+      "packages/types/package.json",
+      "packages/types/README.md",
+      "packages/utils/package.json",
+      "packages/utils/Readme.md"
+    ],
+    "parentId": ""
   },
   {
     "title": "Getting Started",
     "description": "Offers a quick-start guide for developers to install rrweb, record their first session, and replay it, aiming to get a working example in under 30 minutes.",
     "path": "/getting-started",
-    "parentId": "",
     "sourceIds": [
       "docs/recipes/record-and-replay.md",
       "packages/rrweb/package.json",
       "packages/all/package.json"
-    ]
+    ],
+    "parentId": ""
   },
   {
     "title": "Core Packages",
     "description": "Explores the main packages of the rrweb ecosystem in detail, providing developers with deeper knowledge of the recording engine, the player component, and the DOM snapshot mechanism.",
     "path": "/core-packages",
-    "parentId": "",
     "sourceIds": [
       "packages/rrweb/package.json",
       "packages/rrweb-player/package.json",
       "packages/rrweb-snapshot/package.json",
-      "packages/rrdom/package.json"
-    ]
+      "packages/rrdom/package.json",
+      "packages/record/package.json",
+      "packages/replay/package.json"
+    ],
+    "parentId": ""
   },
   {
     "title": "Tooling and Extensions",
     "description": "Covers the auxiliary tools and browser extensions that simplify rrweb workflows, such as the browser extension for easy recording and the command-line tool for video conversion.",
     "path": "/tooling-and-extensions",
-    "parentId": "",
     "sourceIds": [
       "packages/web-extension/package.json",
       "packages/rrvideo/package.json"
-    ]
+    ],
+    "parentId": ""
   },
   {
     "title": "Plugins",
     "description": "Details how to extend rrweb's functionality using the official plugins for features like console logging, canvas streaming, and sequential event IDs.",
     "path": "/plugins",
-    "parentId": "",
     "sourceIds": [
       "docs/recipes/plugin.md",
       "packages/plugins/rrweb-plugin-console-record/package.json",
@@ -56,188 +61,25 @@
       "packages/plugins/rrweb-plugin-sequential-id-replay/package.json",
       "packages/plugins/rrweb-plugin-canvas-webrtc-record/package.json",
       "packages/plugins/rrweb-plugin-canvas-webrtc-replay/package.json"
-    ]
+    ],
+    "parentId": ""
   },
   {
     "title": "Advanced Guides",
     "description": "Discusses complex topics and specific use cases, including performance optimization, storage strategies, handling of cross-origin iframes, and different canvas recording techniques.",
     "path": "/advanced-guides",
-    "parentId": "",
     "sourceIds": [
       "docs/recipes/optimize-storage.md",
       "docs/recipes/cross-origin-iframes.md",
       "docs/recipes/canvas.md",
       "packages/packer/README.md"
-    ]
-  },
-  {
-    "title": "Installation",
-    "description": "Provides step-by-step instructions on how to add rrweb to a project using package managers like npm/yarn or by including it via a CDN.",
-    "path": "/getting-started/installation",
-    "parentId": "/getting-started",
-    "sourceIds": [
-      "packages/rrweb/package.json",
-      "packages/all/package.json",
-      "packages/rrweb-player/README.md",
-      "packages/web-extension/README.md"
-    ]
-  },
-  {
-    "title": "Recording a Session",
-    "description": "Presents a simple, copy-paste ready code example to demonstrate how to start recording user interactions on a web page using `rrweb.record()`.",
-    "path": "/getting-started/recording-a-session",
-    "parentId": "/getting-started",
-    "sourceIds": [
-      "docs/recipes/record-and-replay.md",
-      "packages/rrweb/src/record/index.ts",
-      "packages/record/src/index.ts",
-      "packages/rrweb/src/index.ts"
-    ]
-  },
-  {
-    "title": "Replaying a Session",
-    "description": "Shows how to use the recorded events with `rrweb.Replayer` or `rrweb-player` to play back the user session in the browser.",
-    "path": "/getting-started/replaying-a-session",
-    "parentId": "/getting-started",
-    "sourceIds": [
-      "docs/recipes/record-and-replay.md",
-      "packages/rrweb/src/replay/index.ts",
-      "packages/replay/src/index.ts",
-      "packages/rrweb-player/src/main.ts",
-      "packages/rrweb-player/README.md"
-    ]
-  },
-  {
-    "title": "Recording Engine",
-    "description": "Delves into the configuration options of the core recording engine, such as data masking, event sampling, and custom hooks to tailor the recording process.",
-    "path": "/core-packages/recording-engine",
-    "parentId": "/core-packages",
-    "sourceIds": [
-      "packages/rrweb/src/record/index.ts",
-      "packages/record/README.md",
-      "packages/rrweb/src/types.ts",
-      "docs/observer.md"
-    ]
-  },
-  {
-    "title": "Player Component",
-    "description": "Explains how to use and configure the `rrweb-player` UI component, covering its properties, API for programmatic control, and how to listen to player events.",
-    "path": "/core-packages/player-component",
-    "parentId": "/core-packages",
-    "sourceIds": [
-      "packages/rrweb-player/README.md",
-      "packages/rrweb-player/src/main.ts",
-      "packages/rrweb-player/src/Player.svelte.d.ts",
-      "packages/rrweb-player/src/Controller.svelte.d.ts",
-      "packages/rrweb-player/src/types.ts",
-      "docs/recipes/customize-replayer.md"
-    ]
-  },
-  {
-    "title": "DOM Snapshot",
-    "description": "Provides an understanding of how rrweb serializes the DOM into a replayable format and rebuilds it, including the APIs for manual snapshot and reconstruction.",
-    "path": "/core-packages/dom-snapshot",
-    "parentId": "/core-packages",
-    "sourceIds": [
-      "packages/rrweb-snapshot/README.md",
-      "packages/rrweb-snapshot/src/index.ts",
-      "packages/rrweb-snapshot/src/snapshot.ts",
-      "packages/rrweb-snapshot/src/rebuild.ts",
-      "docs/serialization.md"
-    ]
-  },
-  {
-    "title": "Web Extension",
-    "description": "Guides developers on how to install and use the rrweb browser extension for Chrome and Firefox to easily record sessions without writing any code.",
-    "path": "/tooling-and-extensions/web-extension",
-    "parentId": "/tooling-and-extensions",
-    "sourceIds": [
-      "packages/web-extension/README.md",
-      "packages/web-extension/package.json",
-      "packages/web-extension/src/manifest.json",
-      "packages/web-extension/src/background/index.ts",
-      "packages/web-extension/src/content/index.ts",
-      "packages/web-extension/src/popup/App.tsx"
-    ]
-  },
-  {
-    "title": "Video Conversion",
-    "description": "Details the usage of the `rrvideo` command-line tool to convert rrweb's JSON-based session recordings into standard video file formats like WebM.",
-    "path": "/tooling-and-extensions/video-conversion",
-    "parentId": "/tooling-and-extensions",
-    "sourceIds": [
-      "packages/rrvideo/README.md",
-      "packages/rrvideo/package.json",
-      "packages/rrvideo/src/index.ts",
-      "packages/rrvideo/src/cli.ts",
-      "docs/recipes/export-to-video.md"
-    ]
-  },
-  {
-    "title": "Using Plugins",
-    "description": "Provides a general guide on how to integrate and configure plugins for both the recording and replaying processes to extend rrweb's core capabilities.",
-    "path": "/plugins/using-plugins",
-    "parentId": "/plugins",
-    "sourceIds": [
-      "docs/recipes/plugin.md",
-      "packages/rrweb/src/types.ts"
-    ]
-  },
-  {
-    "title": "Console Plugin",
-    "description": "Explains how to use the console plugin to capture and replay browser console logs (e.g., `log`, `warn`, `error`) alongside user interactions.",
-    "path": "/plugins/console",
-    "parentId": "/plugins",
-    "sourceIds": [
-      "docs/recipes/console.md",
-      "packages/plugins/rrweb-plugin-console-record/README.md",
-      "packages/plugins/rrweb-plugin-console-replay/README.md",
-      "packages/plugins/rrweb-plugin-console-record/src/index.ts",
-      "packages/plugins/rrweb-plugin-console-replay/src/index.ts"
-    ]
-  },
-  {
-    "title": "Performance and Storage",
-    "description": "Offers strategies for optimizing performance and minimizing storage size, including event compression with `packFn` and various event sampling techniques.",
-    "path": "/advanced-guides/performance-and-storage",
-    "parentId": "/advanced-guides",
-    "sourceIds": [
-      "docs/recipes/optimize-storage.md",
-      "packages/packer/README.md",
-      "packages/packer/src/pack.ts",
-      "packages/packer/src/unpack.ts",
-      "packages/packer/package.json"
-    ]
-  },
-  {
-    "title": "Cross-Origin Iframes",
-    "description": "Covers the setup and security considerations required to record user sessions that span across cross-origin iframes.",
-    "path": "/advanced-guides/cross-origin-iframes",
-    "parentId": "/advanced-guides",
-    "sourceIds": [
-      "docs/recipes/cross-origin-iframes.md",
-      "packages/rrweb/src/record/iframe-manager.ts",
-      "packages/rrweb/src/record/cross-origin-iframe-mirror.ts"
-    ]
-  },
-  {
-    "title": "Canvas Recording",
-    "description": "Details the methods available for recording canvas content, from capturing individual draw calls to generating periodic image snapshots.",
-    "path": "/advanced-guides/canvas-recording",
-    "parentId": "/advanced-guides",
-    "sourceIds": [
-      "docs/recipes/canvas.md",
-      "packages/rrweb/src/record/observers/canvas/canvas-manager.ts",
-      "packages/rrweb/src/record/observers/canvas/2d.ts",
-      "packages/rrweb/src/record/observers/canvas/webgl.ts",
-      "packages/rrweb/src/replay/canvas/index.ts"
-    ]
+    ],
+    "parentId": ""
   },
   {
     "title": "Use Cases",
     "description": "Provides developers with practical examples and scenarios of how rrweb can be applied to solve real-world problems, such as bug reproduction, user behavior analysis, and collaborative browsing.",
     "path": "/use-cases",
-    "parentId": "",
     "sourceIds": [
       "packages/rrweb/README.md",
       "packages/web-extension/README.md",
@@ -245,6 +87,207 @@
       "docs/recipes/record-and-replay.md",
       "docs/recipes/export-to-video.md",
       "docs/recipes/cross-origin-iframes.md"
-    ]
+    ],
+    "parentId": ""
+  },
+  {
+    "title": "Installation",
+    "description": "Provides step-by-step instructions on how to add rrweb to a project using package managers like npm/yarn or by including it via a CDN.",
+    "path": "/getting-started/installation",
+    "sourceIds": [
+      "packages/rrweb/package.json",
+      "packages/all/package.json",
+      "packages/rrweb-player/README.md",
+      "packages/web-extension/README.md"
+    ],
+    "parentId": "/getting-started"
+  },
+  {
+    "title": "Recording a Session",
+    "description": "Presents a simple, copy-paste ready code example to demonstrate how to start recording user interactions on a web page using `rrweb.record()`.",
+    "path": "/getting-started/recording-a-session",
+    "sourceIds": [
+      "docs/recipes/record-and-replay.md",
+      "packages/rrweb/src/record/index.ts",
+      "packages/record/src/index.ts",
+      "packages/rrweb/src/index.ts"
+    ],
+    "parentId": "/getting-started"
+  },
+  {
+    "title": "Replaying a Session",
+    "description": "Shows how to use the recorded events with `rrweb.Replayer` or `rrweb-player` to play back the user session in the browser.",
+    "path": "/getting-started/replaying-a-session",
+    "sourceIds": [
+      "docs/recipes/record-and-replay.md",
+      "packages/rrweb/src/replay/index.ts",
+      "packages/replay/src/index.ts",
+      "packages/rrweb-player/src/main.ts",
+      "packages/rrweb-player/README.md"
+    ],
+    "parentId": "/getting-started"
+  },
+  {
+    "title": "Recording Engine",
+    "description": "Delves into the configuration options of the core recording engine, such as data masking, event sampling, and custom hooks to tailor the recording process.",
+    "path": "/core-packages/recording-engine",
+    "sourceIds": [
+      "packages/rrweb/src/record/index.ts",
+      "packages/record/README.md",
+      "packages/rrweb/src/types.ts",
+      "docs/observer.md",
+      "packages/record/package.json",
+      "packages/record/tsconfig.json",
+      "packages/record/vite.config.ts"
+    ],
+    "parentId": "/core-packages"
+  },
+  {
+    "title": "Player Component",
+    "description": "Explains how to use and configure the `rrweb-player` UI component, covering its properties, API for programmatic control, and how to listen to player events.",
+    "path": "/core-packages/player-component",
+    "sourceIds": [
+      "packages/rrweb-player/README.md",
+      "packages/rrweb-player/src/main.ts",
+      "packages/rrweb-player/src/Player.svelte.d.ts",
+      "packages/rrweb-player/src/Controller.svelte.d.ts",
+      "packages/rrweb-player/src/types.ts",
+      "docs/recipes/customize-replayer.md",
+      "packages/rrweb-player/package.json",
+      "packages/rrweb-player/CHANGELOG.md",
+      "packages/rrweb-player/index.html",
+      "packages/rrweb-player/svelte.config.js",
+      "packages/rrweb-player/tsconfig.json",
+      "packages/rrweb-player/tsconfig.node.json",
+      "packages/rrweb-player/vite.config.ts",
+      "packages/rrweb-player/vite-env.d.ts"
+    ],
+    "parentId": "/core-packages"
+  },
+  {
+    "title": "DOM Snapshot",
+    "description": "Provides an understanding of how rrweb serializes the DOM into a replayable format and rebuilds it using its virtual DOM implementation (`rrdom`), including the APIs for manual snapshot and reconstruction.",
+    "path": "/core-packages/dom-snapshot",
+    "sourceIds": [
+      "packages/rrweb-snapshot/README.md",
+      "packages/rrweb-snapshot/src/index.ts",
+      "packages/rrweb-snapshot/src/snapshot.ts",
+      "packages/rrweb-snapshot/src/rebuild.ts",
+      "docs/serialization.md",
+      "packages/rrweb-snapshot/package.json",
+      "packages/rrweb-snapshot/CHANGELOG.md",
+      "packages/rrweb-snapshot/jsr.json",
+      "packages/rrweb-snapshot/tsconfig.json",
+      "packages/rrweb-snapshot/vite.config.js",
+      "packages/rrdom/README.md",
+      "packages/rrdom/package.json",
+      "packages/rrdom/CHANGELOG.md",
+      "packages/rrdom/jest.config.js",
+      "packages/rrdom/tsconfig.json",
+      "packages/rrdom/vite.config.js",
+      "packages/rrdom-nodejs/README.md",
+      "packages/rrdom-nodejs/package.json",
+      "packages/rrdom-nodejs/CHANGELOG.md",
+      "packages/rrdom-nodejs/tsconfig.json",
+      "packages/rrdom-nodejs/vite.config.js"
+    ],
+    "parentId": "/core-packages"
+  },
+  {
+    "title": "Web Extension",
+    "description": "Guides developers on how to install and use the rrweb browser extension for Chrome and Firefox to easily record sessions without writing any code.",
+    "path": "/tooling-and-extensions/web-extension",
+    "sourceIds": [
+      "packages/web-extension/README.md",
+      "packages/web-extension/package.json",
+      "packages/web-extension/src/manifest.json",
+      "packages/web-extension/src/background/index.ts",
+      "packages/web-extension/src/content/index.ts",
+      "packages/web-extension/src/popup/App.tsx",
+      "packages/web-extension/CHANGELOG.md",
+      "packages/web-extension/tsconfig.json",
+      "packages/web-extension/vite.config.ts"
+    ],
+    "parentId": "/tooling-and-extensions"
+  },
+  {
+    "title": "Video Conversion",
+    "description": "Details the usage of the `rrvideo` command-line tool to convert rrweb's JSON-based session recordings into standard video file formats like WebM.",
+    "path": "/tooling-and-extensions/video-conversion",
+    "sourceIds": [
+      "packages/rrvideo/README.md",
+      "packages/rrvideo/package.json",
+      "packages/rrvideo/src/index.ts",
+      "packages/rrvideo/src/cli.ts",
+      "docs/recipes/export-to-video.md",
+      "packages/rrvideo/CHANGELOG.md",
+      "packages/rrvideo/jest.config.js",
+      "packages/rrvideo/rrvideo.config.example.json",
+      "packages/rrvideo/tsconfig.json"
+    ],
+    "parentId": "/tooling-and-extensions"
+  },
+  {
+    "title": "Using Plugins",
+    "description": "Provides a general guide on how to integrate and configure plugins for both the recording and replaying processes to extend rrweb's core capabilities.",
+    "path": "/plugins/using-plugins",
+    "sourceIds": [
+      "docs/recipes/plugin.md",
+      "packages/rrweb/src/types.ts"
+    ],
+    "parentId": "/plugins"
+  },
+  {
+    "title": "Console Plugin",
+    "description": "Explains how to use the console plugin to capture and replay browser console logs (e.g., `log`, `warn`, `error`) alongside user interactions.",
+    "path": "/plugins/console",
+    "sourceIds": [
+      "docs/recipes/console.md",
+      "packages/plugins/rrweb-plugin-console-record/README.md",
+      "packages/plugins/rrweb-plugin-console-replay/README.md",
+      "packages/plugins/rrweb-plugin-console-record/src/index.ts",
+      "packages/plugins/rrweb-plugin-console-replay/src/index.ts"
+    ],
+    "parentId": "/plugins"
+  },
+  {
+    "title": "Performance and Storage",
+    "description": "Offers strategies for optimizing performance and minimizing storage size, including event compression with `packFn` and various event sampling techniques.",
+    "path": "/advanced-guides/performance-and-storage",
+    "sourceIds": [
+      "docs/recipes/optimize-storage.md",
+      "packages/packer/README.md",
+      "packages/packer/src/pack.ts",
+      "packages/packer/src/unpack.ts",
+      "packages/packer/package.json",
+      "packages/packer/CHANGELOG.md",
+      "packages/packer/tsconfig.json",
+      "packages/packer/vite.config.ts"
+    ],
+    "parentId": "/advanced-guides"
+  },
+  {
+    "title": "Cross-Origin Iframes",
+    "description": "Covers the setup and security considerations required to record user sessions that span across cross-origin iframes.",
+    "path": "/advanced-guides/cross-origin-iframes",
+    "sourceIds": [
+      "docs/recipes/cross-origin-iframes.md",
+      "packages/rrweb/src/record/iframe-manager.ts",
+      "packages/rrweb/src/record/cross-origin-iframe-mirror.ts"
+    ],
+    "parentId": "/advanced-guides"
+  },
+  {
+    "title": "Canvas Recording",
+    "description": "Details the methods available for recording canvas content, from capturing individual draw calls to generating periodic image snapshots.",
+    "path": "/advanced-guides/canvas-recording",
+    "sourceIds": [
+      "docs/recipes/canvas.md",
+      "packages/rrweb/src/record/observers/canvas/canvas-manager.ts",
+      "packages/rrweb/src/record/observers/canvas/2d.ts",
+      "packages/rrweb/src/record/observers/canvas/webgl.ts",
+      "packages/rrweb/src/replay/canvas/index.ts"
+    ],
+    "parentId": "/advanced-guides"
   }
 ]

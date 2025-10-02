@@ -1,68 +1,90 @@
 # Core Packages
 
-The `rrweb` ecosystem is designed with a modular architecture, consisting of several specialized packages. This structure allows you to use only the parts you need, providing flexibility for different use cases. This section provides an overview of the primary packages that form the foundation of `rrweb`'s recording and replaying capabilities.
+The rrweb ecosystem is designed with a modular architecture, allowing developers to use only the parts they need. At its heart are a few core packages that handle the logic for recording, snapshotting the DOM, and replaying sessions. Understanding these components is key to leveraging rrweb's full potential.
+
+This section provides a detailed exploration of these main packages, explaining their specific roles and how they interact to provide a complete session recording and replay solution.
 
 ## Architecture Overview
 
-The following diagram illustrates how the core packages interact during the recording and replaying processes. The recording is handled by `rrweb` and `rrweb-snapshot`, which produce a stream of events. The replay is managed by `rrweb-player`, which uses `rrdom` to reconstruct the session in a sandboxed environment.
+The following diagram illustrates the relationship between the core packages and the flow of data from recording to replay.
 
 ```d2
 direction: down
 
-Recording-Process: {
+Recording: {
   label: "Recording Process"
   shape: rectangle
-  
+
   rrweb: {
-    label: "rrweb\n(Recording Engine)"
+    label: "rrweb\n(Orchestrator)"
+    shape: rectangle
   }
-  
+
+  rrweb-record: {
+    label: "@rrweb/record\n(Core Recording Logic)"
+    shape: rectangle
+  }
+
   rrweb-snapshot: {
-    label: "rrweb-snapshot\n(DOM Serializer)"
+    label: "rrweb-snapshot\n(DOM Snapshotting)"
+    shape: rectangle
   }
 }
 
-Replay-Process: {
+Replay: {
   label: "Replay Process"
   shape: rectangle
-  
+
   rrweb-player: {
     label: "rrweb-player\n(UI Component)"
+    shape: rectangle
   }
-  
+
+  rrweb-replay: {
+    label: "@rrweb/replay\n(Core Replay Logic)"
+    shape: rectangle
+  }
+
   rrdom: {
     label: "rrdom\n(Virtual DOM)"
+    shape: rectangle
   }
 }
 
-Event-Stream: {
-  label: "Event Stream (JSON)"
-  shape: cylinder
-}
+Recording.rrweb -> Recording.rrweb-record: "Includes"
+Recording.rrweb-record -> Recording.rrweb-snapshot: "Uses to serialize DOM"
 
-Recording-Process.rrweb -> Recording-Process.rrweb-snapshot: "1. Takes initial snapshot"
-Recording-Process.rrweb -> Event-Stream: "2. Emits event stream"
-Event-Stream -> Replay-Process.rrweb-player: "3. Consumes event stream"
-Replay-Process.rrweb-player -> Replay-Process.rrdom: "4. Reconstructs DOM"
+Recording -> Replay: "Serialized Events"
+
+Replay.rrweb-player -> Replay.rrweb-replay: "Uses"
+Replay.rrweb-replay -> Replay.rrdom: "Uses to rebuild DOM"
 ```
 
-## Main Packages
+## Key Packages
 
-Below is a detailed breakdown of each core package, its primary function, and a link to more in-depth documentation.
+The rrweb functionality is distributed across several key packages. Here is a summary of the most important ones:
 
-<x-cards data-columns="2">
-  <x-card data-title="rrweb" data-icon="lucide:record-circle" data-href="/core-packages/recording-engine" data-cta="Learn More">
-    The core recording engine. It captures all necessary data to reconstruct a web session, including the initial DOM state, incremental mutations, user interactions (mouse movements, clicks, scrolls), and more. It is highly configurable to handle complex scenarios.
+| Package | Description |
+|---|---|
+| `rrweb` | The main, all-in-one package that provides both recording and replaying capabilities. |
+| `rrweb-player` | A feature-rich UI component for replaying rrweb sessions with a timeline, play/pause controls, and event inspection. |
+| `rrweb-snapshot` | A library for serializing the DOM and external assets into a structured, replayable format. |
+| `rrdom` | A virtual DOM implementation designed specifically for rrweb, used to accurately rebuild the DOM state during replay. |
+| `@rrweb/record` | A scoped package containing only the recording logic, ideal for applications that only need to capture sessions. |
+| `@rrweb/replay` | A scoped package containing only the core replaying logic, used by `rrweb-player` under the hood. |
+
+## In-Depth Guides
+
+For a deeper dive into the configuration and API of each core component, please refer to the following guides:
+
+<x-cards data-columns="3">
+  <x-card data-title="Recording Engine" data-href="/core-packages/recording-engine" data-icon="lucide:record-circle">
+    Delve into the configuration options of the core recording engine, such as data masking, event sampling, and custom hooks.
   </x-card>
-  <x-card data-title="rrweb-player" data-icon="lucide:play-circle" data-href="/core-packages/player-component" data-cta="Learn More">
-    A feature-rich player component with a user interface for replaying recorded sessions. It provides typical video controls like play/pause, a timeline for scrubbing, speed adjustments, and displays metadata about the session.
+  <x-card data-title="Player Component" data-href="/core-packages/player-component" data-icon="lucide:play-circle">
+    Learn how to use and configure the rrweb-player UI, including its properties, API for programmatic control, and player events.
   </x-card>
-  <x-card data-title="rrweb-snapshot" data-icon="lucide:camera" data-href="/core-packages/dom-snapshot" data-cta="Learn More">
-    A specialized utility for serializing a webpage's DOM and its state into a structured, JSON-serializable format. It also includes the logic to rebuild the DOM from this snapshot, which is the first step in any replay.
-  </x-card>
-  <x-card data-title="rrdom" data-icon="lucide:boxes">
-    A lightweight, custom implementation of the DOM designed specifically for rrweb's replay process. Instead of manipulating the live DOM, the replayer uses rrdom to reconstruct the recorded page state in a sandboxed environment, ensuring fidelity and preventing side effects.
+  <x-card data-title="DOM Snapshot" data-href="/core-packages/dom-snapshot" data-icon="lucide:camera">
+    Understand how rrweb serializes the DOM into a replayable format and rebuilds it using its virtual DOM implementation (rrdom).
   </x-card>
 </x-cards>
-
-Understanding these core packages is key to effectively using and customizing `rrweb`. For practical implementation details, please proceed to the detailed guides for each component.

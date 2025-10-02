@@ -1,48 +1,47 @@
 # Console Plugin
 
-The console plugin extends rrweb's capabilities by capturing and replaying browser console output, such as `console.log`, `console.warn`, and `console.error`. This functionality is invaluable for debugging, as it provides developers with a complete context of application logs alongside user interactions, helping to diagnose issues more efficiently.
+The console plugin for rrweb allows you to capture and replay browser console activity, such as `console.log`, `console.warn`, and `console.error` messages, alongside standard user interactions. This provides developers with a richer context for debugging by showing what was happening in the console at the time of an issue.
 
-This guide will detail the procedures for enabling and configuring the console plugin for both recording and replaying sessions.
+This functionality has been available since version 1.0.0 and requires separate plugin configurations for recording and replaying.
 
-## Recording Console Output
+## Recording Console Logs
 
-To begin recording console activity, you must import and add the `getRecordConsolePlugin` to the `plugins` array in your `rrweb.record` configuration.
+To capture console output, you need to add the `getRecordConsolePlugin` to the `rrweb.record` configuration.
 
-### Basic Configuration
+### Default Configuration
 
-Here is a standard implementation to enable console recording with default settings:
+Here is a basic setup to enable console recording with default options:
 
 ```javascript Enabling Console Recording icon=logos:javascript
 import rrweb from 'rrweb';
 import { getRecordConsolePlugin } from '@rrweb/rrweb-plugin-console-record';
 
 rrweb.record({
-  emit(event) {
-    // Note: To avoid infinite loops, do not use console.log directly here.
-    const originalConsoleLog = console.log['__rrweb_original__'] || console.log;
+  emit: function emit(event) {
+    // Note: To avoid a RangeError, use the original console.log.
+    const originalConsoleLog = console.log['__rrweb_original__'] 
+      ? console.log['__rrweb_original__'] 
+      : console.log;
     originalConsoleLog(event);
   },
-  plugins: [
-    // Enable the console record plugin with default options
-    getRecordConsolePlugin(),
-  ],
+  // Add the console record plugin with default options
+  plugins: [getRecordConsolePlugin()],
 });
 ```
 
-> **Important:** When defining the `emit` function, you must not call `console.log` or other console methods directly. Doing so will create an infinite loop, as the plugin will capture its own output. Instead, access the original console method via `console.log['__rrweb_original__']` to safely log the events.
+> **Important:** When processing recorded events within the `emit` function, you must not use the standard `console.log` (or other console methods) to output the event data. Doing so will cause the plugin to capture its own output, leading to an infinite loop and a `RangeError: Maximum call stack size exceeded`. Always access the original console method via the `__rrweb_original__` property, as shown in the example.
 
-### Advanced Configuration
+### Custom Configuration
 
-You can customize the console recording behavior by passing an options object to `getRecordConsolePlugin`.
+You can customize the recording behavior by passing an options object to the `getRecordConsolePlugin`.
 
-```javascript Customizing Console Recording icon=logos:javascript
+```javascript Custom Console Recording Options icon=logos:javascript
 import rrweb from 'rrweb';
 import { getRecordConsolePlugin } from '@rrweb/rrweb-plugin-console-record';
 
 rrweb.record({
-  emit(event) {
-    const originalConsoleLog = console.log['__rrweb_original__'] || console.log;
-    originalConsoleLog(event);
+  emit: (event) => {
+    // Event processing logic...
   },
   plugins: [
     getRecordConsolePlugin({
@@ -59,37 +58,41 @@ rrweb.record({
 });
 ```
 
-#### Recording Options
+### Recording Options
 
-The following options are available to configure the recording plugin:
+The following options are available to configure the console recording plugin.
 
 <x-field-group>
-  <x-field data-name="level" data-type="string[]" data-default='["assert", "clear", "count", ...]' data-required="false">
-    <x-field-desc markdown>An array of console method names to record. By default, it includes all standard console levels. You can provide a smaller array to record only specific levels, e.g., `['warn', 'error']`.</x-field-desc>
+  <x-field data-name="level" data-type="string[]">
+    <x-field-desc markdown>An array of console method names to record. By default, it includes all standard console levels: `assert`, `clear`, `count`, `countReset`, `debug`, `dir`, `dirxml`, `error`, `group`, `groupCollapsed`, `groupEnd`, `info`, `log`, `table`, `time`, `timeEnd`, `timeLog`, `trace`, and `warn`.</x-field-desc>
   </x-field>
-  <x-field data-name="lengthThreshold" data-type="number" data-default="1000" data-required="false">
+  <x-field data-name="lengthThreshold" data-type="number" data-default="1000">
     <x-field-desc markdown>The maximum number of console records to capture in a session. A warning is emitted when this threshold is reached.</x-field-desc>
   </x-field>
-  <x-field data-name="stringifyOptions" data-type="object" data-required="false">
-    <x-field-desc markdown>Configuration for serializing objects logged to the console. This helps manage the size of recorded events.</x-field-desc>
-    <x-field data-name="stringLengthLimit" data-type="number" data-required="false" data-desc="Limits the string length of a single value."></x-field>
-    <x-field data-name="numOfKeysLimit" data-type="number" data-default="50" data-required="false" data-desc="Limits the number of keys in an object before it is serialized as a string representation (e.g., '[Object]')."></x-field>
-    <x-field data-name="depthOfLimit" data-type="number" data-default="4" data-required="false" data-desc="Limits the nesting depth for object serialization."></x-field>
+  <x-field data-name="stringifyOptions" data-type="object">
+    <x-field-desc markdown>Provides fine-grained control over how JavaScript objects are stringified to manage the size of the event payload.</x-field-desc>
+    <x-field data-name="stringLengthLimit" data-type="number" data-desc="Limits the string length of a single value."></x-field>
+    <x-field data-name="numOfKeysLimit" data-type="number" data-default="50" data-desc="Limits the number of keys in an object. If an object exceeds this limit, its name is saved instead of its contents."></x-field>
+    <x-field data-name="depthOfLimit" data-type="number" data-default="4" data-desc="Limits the nesting depth for objects."></x-field>
   </x-field>
-  <x-field data-name="logger" data-type="object | 'console'" data-default="window.console" data-required="false">
-    <x-field-desc markdown>The console object to record. This allows you to capture logs from other execution environments, such as an iframe.</x-field-desc>
+  <x-field data-name="logger" data-type="object" data-default="window.console">
+    <x-field-desc markdown>The console object to record. This allows you to target a console from a different execution environment if needed.</x-field-desc>
   </x-field>
 </x-field-group>
 
-## Replaying Console Output
+## Replaying Console Logs
 
-If a recording contains console events, they will be replayed automatically when using the `rrweb.Replayer`. To configure the replay behavior, add the `getReplayConsolePlugin` to the replayer's `plugins` array.
+If the recorded session events include console data, you can use the `getReplayConsolePlugin` to automatically play them back in the browser's console during replay.
 
-```javascript Replaying Console Logs icon=logos:javascript
+### Enabling the Plugin
+
+Add the plugin to the `rrweb.Replayer` configuration. It will automatically detect and handle console events.
+
+```javascript Enabling Console Replay icon=logos:javascript
 import rrweb from 'rrweb';
 import { getReplayConsolePlugin } from '@rrweb/rrweb-plugin-console-replay';
 
-// Assume 'events' is an array of recorded rrweb events
+// Assuming 'events' is an array of rrweb events
 const replayer = new rrweb.Replayer(events, {
   plugins: [
     getReplayConsolePlugin({
@@ -103,17 +106,17 @@ replayer.play();
 
 ### Replay Options
 
-The following options are available for the replay plugin:
+The following options are available for the replay plugin.
 
 <x-field-group>
-  <x-field data-name="level" data-type="string[]" data-default='["assert", "clear", "count", ...]' data-required="false">
-    <x-field-desc markdown>Filters which console levels are replayed. Only logs matching the levels in this array will be output to the browser's console during replay.</x-field-desc>
+  <x-field data-name="level" data-type="string[]">
+    <x-field-desc markdown>An array specifying which console levels to replay. By default, it includes all standard console levels.</x-field-desc>
   </x-field>
-  <x-field data-name="replayLogger" data-type="ReplayLogger" data-required="false">
-    <x-field-desc markdown>Allows you to provide a custom logger object to handle the replayed console messages. This is useful for displaying logs in a custom UI component instead of the browser console.</x-field-desc>
+  <x-field data-name="replayLogger" data-type="object">
+    <x-field-desc markdown>Provides a custom logger object to handle the replayed console messages. This is useful if you want to display the logs in a simulated console UI within your application instead of the actual browser console.</x-field-desc>
   </x-field>
 </x-field-group>
 
 ---
 
-By following these steps, you can effectively integrate console logging into your rrweb sessions. For more information on extending rrweb, please see the general guide on [Using Plugins](./plugins-using-plugins.md).
+This guide covers the essentials of capturing and replaying console output. For more general information on how to integrate plugins, please see the [Using Plugins](./plugins-using-plugins.md) guide.

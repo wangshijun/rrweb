@@ -1,199 +1,121 @@
-"meta":
-  "title": "rrweb: The Open-Source Session Replay Library"
-  "description": "Record and replay web sessions with pixel-perfect accuracy.
-    Understand user behavior, debug faster, and improve your product with rrweb,
-    the leading open-source tool for session replay."
-  "image": ""
-"sections":
-  - "sectionName": "hero"
-    "sectionSummary": "A powerful, developer-focused hero section that immediately
-      introduces rrweb's core function and provides clear calls-to-action to try
-      the demo or view the source code."
-    "heroTitle": "Record and Replay the Web"
-    "heroDescription": "rrweb is a powerful open-source tool for recording and
-      replaying users' interactions on your web application. See exactly what
-      your users see and revolutionize your debugging and user analysis."
-    "sectionBackground": "linear-gradient(to right, #232526, #414345)"
-    "actions":
-      - "text": "Try the Live Demo"
-        "link": "https://www.rrweb.io/"
-      - "text": "View on GitHub"
-        "link": "https://github.com/rrweb-io/rrweb"
-  - "sectionName": "useCases"
-    "sectionSummary": "This section showcases the top-tier use cases for rrweb,
-      focusing on debugging, user analytics, and support to demonstrate its
-      immediate value to development and product teams."
-    "title": "Unlock Powerful Insights with Session Replay"
-    "description": "Go beyond traditional analytics and see your application through
-      your users' eyes. Here’s how you can leverage rrweb to build better
-      products, faster."
-    "list":
-      - "sectionName": "bugReproduction"
-        "sectionSummary": "Details the use case of bug reproduction and debugging."
-        "cardTitle": "Bug Reproduction and Debugging"
-        "cardDescription": "Capture the exact conditions and interactions that lead to a
-          bug. Developers can replay the session to observe the issue firsthand,
-          inspect the DOM at any point in time, and debug with complete context.
-          This eliminates the 'it works on my machine' problem and dramatically
-          reduces the time spent on issue replication."
-        "iconifyIconName": "lucide:bug"
-      - "sectionName": "userBehaviorAnalysis"
-        "sectionSummary": "Details the use case of analyzing user behavior."
-        "cardTitle": "User Behavior Analysis"
-        "cardDescription": "Gain qualitative insights into how users interact with your
-          application. Session replays allow product managers and UX designers
-          to watch actual user journeys, identify points of friction, discover
-          usability issues, and understand behavior in a way that quantitative
-          analytics alone cannot provide."
-        "iconifyIconName": "lucide:line-chart"
-      - "sectionName": "customerSupport"
-        "sectionSummary": "Details the use case of customer support and co-browsing."
-        "cardTitle": "Customer Support and Co-browsing"
-        "cardDescription": "Power real-time customer support by viewing a user's session
-          live (with sensitive data masked). Support agents can provide
-          accurate, contextual guidance without guesswork, leading to faster
-          resolutions and a better customer experience. This is often referred
-          to as 'co-browsing.'"
-        "iconifyIconName": "lucide:users"
-      - "sectionName": "productDemos"
-        "sectionSummary": "Details the use case of creating product demos and training."
-        "cardTitle": "Creating Product Demos and Training"
-        "cardDescription": "Generate high-fidelity, interactive product tours and
-          tutorials from recorded sessions. Instead of creating mock-ups, you
-          can use real application interactions to create realistic and
-          effective onboarding materials or marketing demos."
-        "iconifyIconName": "lucide:video"
-      - "sectionName": "automatedTesting"
-        "sectionSummary": "Details the use case of automated testing."
-        "cardTitle": "Automated Testing"
-        "cardDescription": "Accelerate the creation of end-to-end tests by converting
-          recorded user sessions into automated test scripts. This helps capture
-          complex user flows and edge cases that are difficult to script
-          manually, thereby improving test coverage and reliability."
-        "iconifyIconName": "lucide:bot"
-      - "sectionName": "complianceAuditing"
-        "sectionSummary": "Details the use case of compliance and auditing."
-        "cardTitle": "Compliance and Auditing"
-        "cardDescription": "Maintain a detailed, replayable audit trail of user activity
-          for compliance and security purposes. In regulated industries like
-          finance or healthcare, session replays provide a verifiable record of
-          user actions within the application."
-        "iconifyIconName": "lucide:shield-check"
-  - "sectionName": "howItWorks"
-    "sectionSummary": "Explains the core technical concepts behind rrweb in an
-      accessible way, building confidence and providing a high-level
-      architectural overview for technical users."
-    "title": "The Magic Behind the Curtain"
-    "description": "rrweb is built on a foundation of clever browser APIs and a
-      smart data structure. Here's a glimpse into its core components."
-    "list":
-      - "sectionName": "serialization"
-        "sectionSummary": "Explains the serialization process."
-        "cardTitle": "DOM Serialization"
-        "cardDescription": "rrweb converts the DOM and its state into a serializable
-          data structure, capturing everything needed to rebuild the page
-          perfectly, including tricky states like input values."
-        "iconifyIconName": "mdi:code-braces"
-      - "sectionName": "incrementalSnapshots"
-        "sectionSummary": "Explains incremental snapshots."
-        "cardTitle": "Incremental Snapshots"
-        "cardDescription": "After the initial snapshot, rrweb records only the changes
-          (mutations, interactions, scrolls) as a stream of events, making
-          recordings incredibly efficient and lightweight."
-        "iconifyIconName": "mdi:camera-plus-outline"
-      - "sectionName": "replayEngine"
-        "sectionSummary": "Explains the replay process."
-        "cardTitle": "High-Fidelity Replay"
-        "cardDescription": "The replayer reconstructs the initial DOM and then applies
-          each incremental snapshot in sequence with a high-precision timer,
-          creating a pixel-perfect recreation of the user's session."
-        "iconifyIconName": "mdi:play-box-outline"
-      - "sectionName": "secureSandbox"
-        "sectionSummary": "Explains the security sandbox."
-        "cardTitle": "Secure Sandbox"
-        "cardDescription": "Replays happen inside a sandboxed iframe, disabling all
-          script execution to prevent any potential security risks and ensure
-          the replay environment is completely isolated and safe."
-        "iconifyIconName": "mdi:shield-lock-outline"
-  - "sectionName": "advancedRecipes"
-    "sectionSummary": "Highlights key advanced features and plugins, showing
-      developers the flexibility and power of rrweb for more complex or
-      specialized scenarios."
-    "title": "Advanced Recipes for Powerful Scenarios"
-    "description": "Take rrweb to the next level with powerful features for
-      real-time streaming, complex element recording, and performance
-      optimization."
-    "list":
-      - "sectionName": "liveReplay"
-        "sectionSummary": "Introduces the live replay feature."
-        "cardTitle": "Real-time Replay (Live Mode)"
-        "cardDescription": "Stream user sessions live! Perfect for real-time
-          collaboration, co-browsing, and immediate customer support scenarios.
-          It's like looking over your user's shoulder, virtually."
-        "iconifyIconName": "mdi:broadcast"
-      - "sectionName": "canvasRecording"
-        "sectionSummary": "Introduces canvas recording capabilities."
-        "cardTitle": "Canvas Recording"
-        "cardDescription": "Capture complex visualizations, games, or editor interfaces.
-          rrweb can record canvas elements as image snapshots or stream them via
-          WebRTC for a complete picture of the user's interaction."
-        "iconifyIconName": "mdi:palette-outline"
-      - "sectionName": "pluginArchitecture"
-        "sectionSummary": "Introduces the plugin system."
-        "cardTitle": "Extensible Plugin Architecture"
-        "cardDescription": "Keep the core light and extend functionality as needed. With
-          plugins, you can record console logs, network requests, and more,
-          tailoring rrweb to your exact needs."
-        "iconifyIconName": "mdi:puzzle-outline"
-      - "sectionName": "storageOptimization"
-        "sectionSummary": "Introduces storage optimization techniques."
-        "cardTitle": "Storage Optimization"
-        "cardDescription": "Manage data volume effectively. Use sampling to reduce event
-          frequency, block sensitive or noisy elements, and apply compression to
-          keep storage costs down."
-        "iconifyIconName": "mdi:database-cog-outline"
-  - "sectionName": "community"
-    "sectionSummary": "Celebrates the open-source community, encourages
-      contributions, and showcases social proof through sponsors, fostering a
-      sense of collaboration and trust."
-    "title": "Built by the Community, for the Community"
-    "description": "rrweb is a thriving open-source project thanks to our
-      contributors, sponsors, and users. Get involved and help shape the future
-      of session replay."
-    "list":
-      - "sectionName": "contribute"
-        "sectionSummary": "Call to action for contributing on GitHub."
-        "cardTitle": "Contribute on GitHub"
-        "cardDescription": "Have an idea or a bug fix? We welcome pull requests! Check
-          out our contribution guide to get started."
-        "iconifyIconName": "mdi:github"
-      - "sectionName": "slackChannel"
-        "sectionSummary": "Call to action for joining the Slack community."
-        "cardTitle": "Join our Slack Channel"
-        "cardDescription": "Connect with other rrweb users and the core team. Ask
-          questions, share your projects, and get support from the community."
-        "iconifyIconName": "mdi:slack"
-      - "sectionName": "becomeSponsor"
-        "sectionSummary": "Call to action for becoming a sponsor."
-        "cardTitle": "Become a Sponsor"
-        "cardDescription": "Support the project's development and get your logo
-          featured. Your sponsorship helps keep rrweb maintained and
-          innovative."
-        "iconifyIconName": "mdi:heart-outline"
-    "action":
-      "text": "View on GitHub"
-      "link": "https://github.com/rrweb-io/rrweb"
-  - "sectionName": "finalCta"
-    "sectionSummary": "A final, energetic call-to-action that encourages immediate
-      engagement by providing clear next steps for both trying out the tool and
-      exploring the source code."
-    "title": "Start Recording Today"
-    "description": "Integrate rrweb into your stack and start seeing your
-      application through your users' eyes. It's time to build better, more
-      intuitive user experiences."
-    "ctaBackground": "primary.main"
-    "ctaActions":
-      - "text": "Try the Live Demo"
-        "link": "https://www.rrweb.io/"
-      - "text": "Explore the Docs"
-        "link": "https://github.com/rrweb-io/rrweb/tree/master/guide.md"
+meta:
+  title: "rrweb: Open-source Web Session Replay"
+  description: "Record and replay every web interaction with pixel-perfect accuracy. rrweb is the open-source tool for developers to understand user behavior, debug faster, and build better products."
+sections:
+  - sectionName: "Hero"
+    sectionSummary: "An energetic and welcoming introduction to rrweb, immediately establishing its core value proposition: recording and replaying web sessions. This section aims to capture attention with a clear benefit-driven headline and provide immediate next steps with prominent calls-to-action."
+    splitHeroTitle: "See Your Web App Through Your Users' Eyes"
+    splitHeroDescription: "rrweb is the open-source powerhouse for recording and replaying web interactions with pixel-perfect fidelity. Stop guessing and start seeing exactly what your users experience to debug faster and build amazing products."
+    splitHeroActions:
+      - text: "Try it now!"
+        link: "https://www.rrweb.io/"
+      - text: "View on GitHub"
+        link: "https://github.com/rrweb-io/rrweb"
+    splitHeroRightImage: "https://placehold.co/800x600?text=rrweb+in+Action"
+  - sectionName: "SocialProof"
+    sectionSummary: "Builds immediate credibility by showcasing prominent companies and projects that trust and use rrweb. This logo wall serves as powerful social proof, assuring new users that rrweb is a reliable and widely-adopted solution."
+    logoWallTitle: "Trusted by Leading Tech Companies"
+    logoWallList:
+      - image: "https://www.rrweb.io/logos/smartx.png"
+        link: "http://www.smartx.com/"
+      - image: "https://www.rrweb.io/logos/posthog.png"
+        link: "https://posthog.com?utm_source=rrweb&utm_medium=sponsorship&utm_campaign=open-source-sponsorship"
+      - image: "https://statcounter.com/images/logo-statcounter-arc-blue.svg"
+        link: "https://statcounter.com/session-replay/"
+      - image: "https://uploads-ssl.webflow.com/5f3d133183156245630d4446/5f3d1940abe8db8612c23521_Record-Once-logo-554x80px.svg"
+        link: "https://recordonce.com/"
+      - image: "https://cux.io/cux-logo.svg"
+        link: "https://cux.io"
+      - image: "https://github.com/highlight/highlight/raw/main/highlight.io/public/images/logo.png"
+        link: "https://highlight.io"
+      - image: "https://github.com/requestly/requestly/assets/16779465/652552db-c867-44cb-9bb5-94a2026e04ca"
+        link: "https://requestly.io"
+      - image: "https://assets-global.website-files.com/6506f3f29c68b1724807619d/6506f56010237164c6306591_GleapLogo.svg"
+        link: "https://gleap.io"
+      - image: "https://github.com/UXWizz/public-files/raw/main/assets/logo.png"
+        link: "https://uxwizz.com"
+  - sectionName: "HowItWorks"
+    sectionSummary: "Breaks down rrweb's core technical concepts into easily digestible parts. This section targets the developer audience by explaining the 'magic' behind the tool, building confidence in its architecture and capabilities."
+    fourColumnGridTitle: "How the Magic Happens: The Core of rrweb"
+    list:
+      - sectionName: "Serialization"
+        sectionSummary: "Explains how rrweb converts the DOM into a transmittable data structure, including special handling for scripts, input values, and styles."
+        iconName: "mdi:code-json"
+        cardTitle: "DOM Serialization"
+        cardDescription: "We convert the entire DOM into a serializable JSON format, capturing everything from input values to CSS rules, while safely de-scripting to ensure a secure replay."
+      - sectionName: "IncrementalSnapshots"
+        sectionSummary: "Details the use of MutationObserver to capture all DOM changes, mouse movements, and interactions efficiently."
+        iconName: "mdi:camera-iris"
+        cardTitle: "Incremental Snapshots"
+        cardDescription: "Using the power of MutationObserver, rrweb records every single change—DOM mutations, mouse movements, and user inputs—as a lightweight incremental event."
+      - sectionName: "ReplayEngine"
+        sectionSummary: "Describes the replay process, highlighting the high-precision timer and the sandboxed environment for accurate and secure playback."
+        iconName: "mdi:play-box-outline"
+        cardTitle: "Pixel-Perfect Replay"
+        cardDescription: "Our high-precision timer reconstructs events in a secure iframe sandbox, replaying user sessions exactly as they happened, right down to hover states and window resizing."
+      - sectionName: "SandboxSecurity"
+        sectionSummary: "Focuses on the security aspect, explaining how rrweb uses a sandboxed iframe to prevent script execution and protect user data during replay."
+        iconName: "mdi:shield-lock-outline"
+        cardTitle: "Sandbox for Security"
+        cardDescription: "Every replay happens inside a secure iframe sandbox, which blocks scripts and form submissions, ensuring that replaying a session is always safe and predictable."
+  - sectionName: "GettingStarted"
+    sectionSummary: "Provides a clear, action-oriented guide to get developers started with rrweb immediately. This section presents minimal, essential code snippets for recording and replaying to lower the barrier to entry."
+    twoColumnGridTitle: "Get Started in Minutes"
+    list:
+      - sectionName: "RecordSession"
+        sectionSummary: "A card showing the code to start recording a user session."
+        contentCardTitle: "1. Record a Session"
+        contentCardDescription: "Just add a few lines of code to your application. rrweb will start capturing all interactions and mutations, which you can then send to your storage of choice."
+        contentCardRightCode:
+          name: "record.js"
+          content: "import { record } from 'rrweb';\n\n// `events` will be an array of events.\nlet events = [];\n\n// stop recording\nconst stopFn = record({\n  emit(event) {\n    // push event into the events array\n    events.push(event);\n  },\n});"
+      - sectionName: "ReplaySession"
+        sectionSummary: "A card showing the code to replay a recorded session."
+        contentCardTitle: "2. Replay It Anywhere"
+        contentCardDescription: "Take your recorded events and feed them into the replayer. You can embed the replayer in your dashboard to watch sessions back instantly."
+        contentCardRightCode:
+          name: "replay.js"
+          content: "import { Replayer } from 'rrweb';\n\n// `events` is the array of events captured by `record`\n\nconst replayer = new Replayer(events);\n\n// play the events\nreplayer.play();"
+  - sectionName: "AdvancedUseCases"
+    sectionSummary: "Showcases the versatility and power of rrweb by highlighting advanced features and use cases. This section inspires developers with what's possible, from real-time streaming to performance optimization."
+    threeColumnGridTitle: "Unlock Powerful Use Cases"
+    list:
+      - sectionName: "LiveMode"
+        sectionSummary: "Highlights the real-time replay capability for live support or collaboration."
+        iconName: "mdi:broadcast"
+        cardTitle: "Live Mode & Co-browsing"
+        cardDescription: "Stream user sessions in real-time for live customer support, collaborative browsing, or application monitoring. It's like you're sitting right next to them!"
+      - sectionName: "StorageOptimization"
+        sectionSummary: "Explains how to optimize storage costs with sampling and compression."
+        iconName: "mdi:zip-box-outline"
+        cardTitle: "Storage Optimization"
+        cardDescription: "Keep your data lean. Use event sampling, our packer for compression, or server-side deduplication to dramatically reduce storage size and costs."
+      - sectionName: "ExtensiblePlugins"
+        sectionSummary: "Introduces the plugin ecosystem for extending rrweb's functionality."
+        iconName: "mdi:puzzle-outline"
+        cardTitle: "Extensible via Plugins"
+        cardDescription: "Need more? Extend rrweb's core functionality with plugins. Record console logs, canvas interactions via WebRTC, and more with our powerful plugin API."
+      - sectionName: "CanvasRecording"
+        sectionSummary: "Details how to record dynamic canvas elements."
+        iconName: "mdi:palette-outline"
+        cardTitle: "Canvas Recording"
+        cardDescription: "Capture rich, interactive experiences from `<canvas>` elements. Perfect for recording product tours, games, or complex data visualizations."
+      - sectionName: "ConsoleLogs"
+        sectionSummary: "Explains how to record and replay browser console logs for easier debugging."
+        iconName: "mdi:console-line"
+        cardTitle: "Console Log Replay"
+        cardDescription: "Debug issues faster by seeing the full context. The console plugin records every `console.log`, `warn`, and `error` alongside user actions."
+      - sectionName: "CustomEvents"
+        sectionSummary: "Shows how developers can inject their own custom events into the recording."
+        iconName: "mdi:tag-plus-outline"
+        cardTitle: "Custom Event Tracking"
+        cardDescription: "Enrich your recordings with your own application-specific data. Add custom events to mark key user milestones or track internal state changes."
+  - sectionName: "Contribution"
+    sectionSummary: "A warm and energetic invitation for developers to join the rrweb community. This section provides clear calls-to-action for contributing to the project and engaging with other members."
+    ctaTitle: "Join Our Awesome Community!"
+    ctaDescription: "rrweb is built by developers, for developers. Whether you want to contribute code, report a bug, or just chat with the team, we'd love to have you!"
+    cta:
+      - text: "Contribute on GitHub"
+        link: "https://github.com/rrweb-io/rrweb"
+      - text: "Join our Slack"
+        link: "https://join.slack.com/t/rrweb/shared_invite/zt-siwoc6hx-uWay3s2wyG8t5GpZVb8rWg"

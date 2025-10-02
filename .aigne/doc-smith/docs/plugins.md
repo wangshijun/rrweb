@@ -1,52 +1,58 @@
 # Plugins
 
-The rrweb plugin API is designed to extend core functionality without increasing the size and complexity of the main library. Plugins allow you to capture additional data, such as console logs or canvas streams, and integrate custom behaviors into both the recording and replaying processes.
+The rrweb plugin API provides a powerful way to extend the core functionality of rrweb without increasing the complexity and bundle size of the main library. Plugins allow you to capture additional custom data during a recording session and process that data during replay, enabling features tailored to your specific needs.
 
-This page provides an overview of the plugin system. For detailed implementation guides, please refer to the following sections:
+This section gives a high-level overview of the plugin system, its interfaces, and how to create your own plugins. For detailed instructions on integrating existing plugins, please see the following guides:
 
 <x-cards>
-  <x-card data-title="Using Plugins" data-icon="lucide:puzzle" data-href="/plugins/using-plugins">
-    A general guide on how to integrate and configure plugins for both recording and replaying to extend rrweb's core capabilities.
+  <x-card data-title="Using Plugins" data-href="/plugins/using-plugins" data-icon="lucide:puzzle">
+    A general guide on how to integrate and configure plugins for both recording and replaying.
   </x-card>
-  <x-card data-title="Console Plugin" data-icon="lucide:terminal" data-href="/plugins/console">
-    Learn how to use the console plugin to capture and replay browser console logs (e.g., log, warn, error) alongside user interactions.
+  <x-card data-title="Console Plugin" data-href="/plugins/console" data-icon="lucide:terminal">
+    Learn how to capture and replay browser console logs alongside user interactions.
   </x-card>
 </x-cards>
 
 ## Available Official Plugins
 
-rrweb provides a set of official plugins to handle common use cases. Each feature is typically split into a record and a replay package.
+rrweb offers several official plugins to handle common use cases. These are available as separate packages.
 
-| Feature | Description | Record Package | Replay Package |
-|---|---|---|---|
-| Console Logs | Records and replays `console.log`, `console.warn`, etc. | `@rrweb/rrweb-plugin-console-record` | `@rrweb/rrweb-plugin-console-replay` |
-| Sequential ID | Adds a sequential, incrementing ID to each event. | `@rrweb/rrweb-plugin-sequential-id-record` | `@rrweb/rrweb-plugin-sequential-id-replay` |
-| Canvas WebRTC | Streams `<canvas>` animations via WebRTC for high-fidelity recording. | `@rrweb/rrweb-plugin-canvas-webrtc-record` | `@rrweb/rrweb-plugin-canvas-webrtc-replay` |
+| Plugin Package                                | Description                                               |
+| --------------------------------------------- | --------------------------------------------------------- |
+| `@rrweb/rrweb-plugin-console-record`          | Records browser console activity.                         |
+| `@rrweb/rrweb-plugin-console-replay`          | Replays browser console activity.                         |
+| `@rrweb/rrweb-plugin-sequential-id-record`    | Adds a sequential ID to each recorded event.              |
+| `@rrweb/rrweb-plugin-sequential-id-replay`    | Processes events with sequential IDs during replay.       |
+| `@rrweb/rrweb-plugin-canvas-webrtc-record`    | Records `<canvas>` animations by streaming via WebRTC.    |
+| `@rrweb/rrweb-plugin-canvas-webrtc-replay`    | Replays `<canvas>` animations streamed via WebRTC.        |
 
-## Plugin Interface
+## Plugin API Interfaces
 
-A plugin can implement functionality for recording, replaying, or both. They must conform to the following TypeScript interfaces.
+Plugins can be implemented for the recording process, the replaying process, or both. Each has a distinct interface.
 
 ### Record Plugin Interface
 
-A record plugin observes browser activity and uses a callback function to emit custom events.
+A record plugin observes application state and emits custom events.
 
-```typescript RecordPlugin Interface icon=logos:typescript
+```typescript RecordPlugin Interface
 export type RecordPlugin<TOptions = unknown> = {
-  // A unique name for the plugin.
   name: string;
-  // The observer function that watches for changes and emits events.
   observer: (cb: Function, options: TOptions) => listenerHandler;
-  // Default options for the plugin.
   options: TOptions;
 };
 ```
 
+<x-field-group>
+  <x-field data-name="name" data-type="string" data-required="true" data-desc="A unique name for the plugin. This is stored in the event data."></x-field>
+  <x-field data-name="observer" data-type="function" data-required="true" data-desc="A function that sets up the observation logic. It receives a callback `cb` to emit data and the plugin's `options`. It must return a function to stop the observation."></x-field>
+  <x-field data-name="options" data-type="object" data-required="true" data-desc="A configuration object for the plugin."></x-field>
+</x-field-group>
+
 ### Replay Plugin Interface
 
-A replay plugin provides a handler that processes events during playback. It can interact with the replayer instance via the `context` argument.
+A replay plugin listens for events during playback and can interact with the replayer.
 
-```typescript ReplayPlugin Interface icon=logos:typescript
+```typescript ReplayPlugin Interface
 export type ReplayPlugin = {
   handler: (
     event: eventWithTime,
@@ -56,15 +62,19 @@ export type ReplayPlugin = {
 };
 ```
 
-## Example Implementation
+<x-field data-name="handler" data-type="function" data-required="true">
+  <x-field-desc markdown>A function that is called for each event during replay. It receives the `event`, a flag `isSync` indicating if the event is part of the initial synchronous setup, and a `context` object containing the `replayer` instance.</x-field-desc>
+</x-field>
 
-Here are basic examples of how to create and use custom plugins.
+## Usage Examples
+
+Here are practical examples of how to create and use custom plugins.
 
 ### Record Plugin Example
 
-This example record plugin emits a custom event with a payload every second.
+This example creates a simple record plugin that emits a custom event with a timestamp every second.
 
-```javascript Record Plugin Example icon=logos:javascript
+```typescript Creating a Record Plugin icon=logos:typescript
 const exampleRecordPlugin: RecordPlugin<{ foo: string }> = {
   name: 'my-scope/example@1',
   observer(cb, options) {
@@ -74,7 +84,7 @@ const exampleRecordPlugin: RecordPlugin<{ foo: string }> = {
         timestamp: Date.now(),
       });
     }, 1000);
-    // Return a function to stop the observer.
+    // Return a function to stop the timer
     return () => clearInterval(timer);
   },
   options: {
@@ -82,15 +92,16 @@ const exampleRecordPlugin: RecordPlugin<{ foo: string }> = {
   },
 };
 
+// To use the plugin, pass it into the record options
 rrweb.record({
   emit: (event) => {
-    // The emitted event will be passed here.
+    // The custom event will be emitted here
   },
   plugins: [exampleRecordPlugin],
 });
 ```
 
-When using this plugin, rrweb will generate events with a `type` of `6` (Plugin), containing the plugin's name and its custom payload.
+The plugin will emit events with a `type` of `6` (Plugin). The event structure is as follows:
 
 ```json Emitted Plugin Event icon=mdi:code-json
 {
@@ -108,28 +119,35 @@ When using this plugin, rrweb will generate events with a `type` of `6` (Plugin)
 
 ### Replay Plugin Example
 
-This replay plugin listens for events and processes the payload from the corresponding record plugin.
+This replay plugin listens for events and specifically handles the data from our `my-scope/example@1` plugin.
 
-```javascript Replay Plugin Example icon=logos:javascript
+```typescript Creating a Replay Plugin icon=logos:typescript
 const exampleReplayPlugin: ReplayPlugin = {
   handler(event, isSync, context) {
-    // Check if the event is a plugin event.
+    // Check if the event is a plugin event
     if (event.type === 6 && event.data.plugin === 'my-scope/example@1') {
-      // Handle the custom payload from the record plugin.
-      console.log('Custom plugin event:', event.data.payload);
+      // Access the custom payload
+      const payload = event.data.payload;
+      console.log('Handling custom plugin event:', payload);
+      // You can also interact with the replayer via context.replayer
     }
   },
 };
 
+// To use the plugin, pass it into the Replayer options
 const replayer = new rrweb.Replayer(events, {
   plugins: [exampleReplayPlugin],
 });
 ```
 
-## Plugin Naming Convention
+## Naming Convention
 
-A record plugin must have a unique name, which is stored in the events it emits. To avoid naming conflicts between official plugins and user-created ones, we strongly recommend the following format:
+To prevent naming conflicts between official plugins and custom plugins created by users, it is strongly recommended to adopt a standardized naming convention for the `name` property.
 
-> `scope/name@version`
+The recommended format is:
 
-For example, an official plugin might be named `rrweb/console@1`, while a custom internal plugin could be `github/pr@2`.
+```
+scope/name@version
+```
+
+For example, an official plugin might be named `rrweb/console@1`, while a custom plugin could be `my-company/feature-tracker@2`.
